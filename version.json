@@ -1,0 +1,13 @@
+{
+  "version": "0.1.0",
+  "released": "2026-09-29",
+  "assets": {
+    "personas": 20,
+    "wear": 12,
+    "backdrops": 8,
+    "moods": 8,
+    "specs": 12,
+    "models_in_matrix": 8,
+    "models_tested": 0
+  }
+}

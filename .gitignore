@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.idea/
+.vscode/
+
+# 真实员工照片属于敏感个人信息，永远不要提交
+samples/
+input/
+*.local.jpg
+*.local.png
+
+# 批量输出
+out/
+dist/
+build/
+*.spec-face.cache.json

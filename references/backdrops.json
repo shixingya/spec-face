@@ -1,0 +1,105 @@
+{
+  "version": "0.1.0",
+  "updated": "2026-09-29",
+  "note": "背景与光型编号库。bg_rgb 为可校验目标值，tolerance 为容许色差范围。",
+  "backdrops": [
+    {
+      "id": "B-01",
+      "name_zh": "纯白无缝",
+      "name_en": "Seamless Pure White",
+      "bg_rgb": [255, 255, 255],
+      "tolerance": 10,
+      "light_zh": "正面柔光箱加下方补光，下巴无明显阴影，背景独立打亮",
+      "light_en": "Front softbox plus under-fill, no chin shadow, background lit separately",
+      "use_for": "签证类、门禁人脸库、批量工卡",
+      "prompt_zh": "纯白无缝背景，背景独立打亮无灰阶渐变，人物边缘干净不糊",
+      "prompt_en": "seamless pure white backdrop lit independently with no grey falloff, clean subject separation"
+    },
+    {
+      "id": "B-02",
+      "name_zh": "浅灰到白渐变",
+      "name_en": "Light Grey to White Gradient",
+      "bg_rgb": [214, 216, 219],
+      "tolerance": 16,
+      "light_zh": "45 度主光加反射板，背景留轻微中心亮、边缘暗",
+      "light_en": "45-degree key with reflector, slight center brightness and edge falloff",
+      "use_for": "企业工卡、官网团队页、简历照",
+      "prompt_zh": "浅灰渐变影棚背景，中心略亮四周柔和收暗，整体通透干净",
+      "prompt_en": "light grey studio gradient, brighter at center with soft edge falloff, airy and clean overall"
+    },
+    {
+      "id": "B-03",
+      "name_zh": "中性灰纯色",
+      "name_en": "Neutral Solid Grey",
+      "bg_rgb": [150, 152, 155],
+      "tolerance": 14,
+      "light_zh": "柔光主光加轻微轮廓光，人物与背景明度分离",
+      "light_en": "Soft key with slight rim light, subject separated by brightness",
+      "use_for": "创意与职能岗、对外沟通头像",
+      "prompt_zh": "中性纯色灰背景，均匀无杂斑，人物有轻微轮廓光与背景分离",
+      "prompt_en": "even neutral grey backdrop free of mottling, subject separated by a subtle rim light"
+    },
+    {
+      "id": "B-04",
+      "name_zh": "深藏青纯色",
+      "name_en": "Deep Navy Solid",
+      "bg_rgb": [28, 38, 62],
+      "tolerance": 14,
+      "light_zh": "较高对比硬光，主光位偏高，塑造权威线条",
+      "light_en": "Higher-contrast harder key placed high, sculpting authoritative lines",
+      "use_for": "金融、法务、管理层",
+      "prompt_zh": "深藏青纯色背景，主光位略高、对比明确，肩线与背景清晰分离",
+      "prompt_en": "deep navy solid backdrop, slightly elevated key with defined contrast, shoulders cleanly separated"
+    },
+    {
+      "id": "B-05",
+      "name_zh": "医疗浅蓝绿",
+      "name_en": "Clinical Pale Blue-Green",
+      "bg_rgb": [208, 230, 231],
+      "tolerance": 14,
+      "light_zh": "高调柔光，几乎无阴影，色彩偏冷白",
+      "light_en": "High-key soft light, near-shadowless, cool-white cast",
+      "use_for": "医护、口腔、诊所、药房",
+      "prompt_zh": "浅蓝绿医疗色系背景，高调明亮、阴影极弱，画面洁净无杂物",
+      "prompt_en": "pale blue-green clinical backdrop, high-key with minimal shadows, spotless and clutter-free"
+    },
+    {
+      "id": "B-06",
+      "name_zh": "暖调微纹理纸面",
+      "name_en": "Warm Textured Paper",
+      "bg_rgb": [232, 222, 208],
+      "tolerance": 16,
+      "light_zh": "侧位柔光保留纸纹明暗，人物光略暖",
+      "light_en": "Side soft light keeping paper texture, subject light slightly warm",
+      "use_for": "咨询顾问、教育、文创岗",
+      "prompt_zh": "暖色微纹理纸面背景，可见极细纹理但不喧宾，人物光柔和偏暖",
+      "prompt_en": "warm finely textured paper backdrop with visible but quiet grain, soft slightly warm subject light"
+    },
+    {
+      "id": "B-07",
+      "name_zh": "办公室轻度虚化",
+      "name_en": "Soft Office Blur",
+      "bg_rgb": null,
+      "tolerance": null,
+      "light_zh": "窗光为主加室内环境光，背景虚化控制在中等程度",
+      "light_en": "Window key with ambient fill, moderate background blur",
+      "use_for": "对外销售、门店店长、顾问",
+      "prompt_zh": "办公环境轻度虚化背景，可辨认空间但不出现文字与人脸，主体清晰",
+      "prompt_en": "lightly blurred office setting, space readable but no legible text or other faces, subject sharp",
+      "batch_risk": "批量场景不建议使用：环境光难统一，会导致整批不一致"
+    },
+    {
+      "id": "B-08",
+      "name_zh": "品牌指定纯色",
+      "name_en": "Brand-Specified Solid",
+      "bg_rgb": null,
+      "tolerance": null,
+      "light_zh": "按品牌 VI 色值打背景，需先录入客户 RGB",
+      "light_en": "Match the client's VI color value; RGB must be supplied first",
+      "use_for": "企业统一工卡、连锁门店",
+      "prompt_zh": "客户品牌指定纯色背景，色值严格一致，全批次不得漂移",
+      "prompt_en": "client-specified brand solid backdrop held to exact color value across the whole batch",
+      "requires_input": "brand_rgb"
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "version": "0.1.0",
+  "updated": "2026-09-29",
+  "note": "着装仪容编号库。工牌与门禁场景优先选择无 logo、低反光的款式，避免批次内不一致。",
+  "wear": [
+    {
+      "id": "W-01",
+      "name_zh": "深色圆领基础款",
+      "name_en": "Dark Crew Basic",
+      "desc_zh": "纯黑或深灰圆领，无任何印花与 logo，面料哑光不反光",
+      "desc_en": "Plain black or charcoal crew neck, zero print or logo, matte non-reflective fabric",
+      "suitable_for": ["技术", "创意", "职能"],
+      "prompt_zh": "深色哑光圆领上衣，无图案无标识，领口平整不起翘",
+      "prompt_en": "dark matte crew-neck top, no pattern no logo, flat collar with no curl"
+    },
+    {
+      "id": "W-02",
+      "name_zh": "深色立领或半高领",
+      "name_en": "Dark Stand Collar",
+      "desc_zh": "立领或半高领，弱化领带感，保留一点正式度",
+      "desc_en": "Stand or mock neck, lowers the tie factor while keeping formality",
+      "suitable_for": ["技术", "专业服务"],
+      "prompt_zh": "深色半高领上衣，线条干净，无配饰无 logo",
+      "prompt_en": "dark mock-neck top with clean lines, no accessories no logo"
+    },
+    {
+      "id": "W-03",
+      "name_zh": "浅色挺括衬衫",
+      "name_en": "Light Crisp Shirt",
+      "desc_zh": "白或浅蓝衬衫，领口挺括第一颗扣可选系",
+      "desc_en": "White or pale blue shirt with a crisp collar",
+      "suitable_for": ["销售", "职能", "教育", "医疗"],
+      "prompt_zh": "浅色挺括衬衫，领型清晰不软塌，衣面无杂褶",
+      "prompt_en": "light crisp shirt with a clearly defined collar, fabric free of random wrinkles"
+    },
+    {
+      "id": "W-04",
+      "name_zh": "深色合体西装",
+      "name_en": "Fitted Dark Suit",
+      "desc_zh": "深蓝或深灰西装，肩线合体，素色内搭",
+      "desc_en": "Navy or charcoal suit with correct shoulders and a plain inner layer",
+      "suitable_for": ["金融", "法务", "销售"],
+      "prompt_zh": "合体深色西装，肩线贴合不松不紧，内搭素色，整体低装饰",
+      "prompt_en": "well-fitted dark suit with shoulders that neither gap nor pull, plain inner layer, overall low ornamentation"
+    },
+    {
+      "id": "W-05",
+      "name_zh": "针织开衫",
+      "name_en": "Knit Cardigan",
+      "desc_zh": "中薄针织，降低压迫感，适合教育与职能岗",
+      "desc_en": "Mid-weight knit that softens authority, fits education and HR",
+      "suitable_for": ["教育", "职能", "创意"],
+      "prompt_zh": "素色针织开衫，织纹细腻可见，肩袖自然不夸张",
+      "prompt_en": "solid knit cardigan with fine visible texture, natural shoulder and sleeve lines"
+    },
+    {
+      "id": "W-06",
+      "name_zh": "Polo 衫",
+      "name_en": "Polo Shirt",
+      "desc_zh": "纯色 Polo，领子立得住，休闲与规范之间",
+      "desc_en": "Solid polo with a collar that holds shape, between casual and standard",
+      "suitable_for": ["零售", "技术", "供应链"],
+      "prompt_zh": "纯色 Polo 衫，领口平整有支撑，无刺绣标识",
+      "prompt_en": "solid polo shirt with a flat supported collar, no embroidered marks"
+    },
+    {
+      "id": "W-07",
+      "name_zh": "高领毛衣",
+      "name_en": "Turtleneck",
+      "desc_zh": "细针织高领，去领带感并保留权威",
+      "desc_en": "Fine-knit turtleneck that keeps authority without a tie",
+      "suitable_for": ["金融", "法务", "专业服务"],
+      "prompt_zh": "细针织高领，贴合颈部不堆褶，色调沉稳单一",
+      "prompt_en": "fine-knit turtleneck sitting close without bunching, in a single restrained tone"
+    },
+    {
+      "id": "W-08",
+      "name_zh": "白大褂",
+      "name_en": "White Coat",
+      "desc_zh": "平整白大褂，内搭浅色，胸前不挂杂物",
+      "desc_en": "Crisp white coat over a light layer, nothing clipped on the chest",
+      "suitable_for": ["医疗"],
+      "prompt_zh": "干净平整的白大褂，领口翻开对称，内搭浅色，不佩戴听诊器等杂物",
+      "prompt_en": "clean pressed white coat with symmetrical open lapels over a light inner layer, no stethoscope or clutter"
+    },
+    {
+      "id": "W-09",
+      "name_zh": "品牌工服",
+      "name_en": "Brand Uniform",
+      "desc_zh": "企业统一工服，批量场景必须锁定同一款式与同一色号",
+      "desc_en": "Company uniform; in batch work the style and color code must be locked",
+      "suitable_for": ["零售", "物业服务", "制造", "供应链"],
+      "prompt_zh": "统一工服，款式与色号一致，衣牌位置规范，无个性化改造",
+      "prompt_en": "standardized uniform with consistent style and color code, name badge placed to spec, no personal alteration"
+    },
+    {
+      "id": "W-10",
+      "name_zh": "安全规范着装",
+      "name_en": "Safety-Compliant Wear",
+      "desc_zh": "含反光条工装或安全帽，适用于产线与仓储门禁照",
+      "desc_en": "Reflective workwear or hard hat for plant and warehouse badge photos",
+      "suitable_for": ["制造", "供应链"],
+      "prompt_zh": "符合安全规范的工装，反光条清晰，帽带系好，面部无遮挡",
+      "prompt_en": "safety-compliant workwear with clear reflective strips, chin strap fastened, face fully unobstructed"
+    },
+    {
+      "id": "W-11",
+      "name_zh": "护士服或刷手服",
+      "name_en": "Nurse Uniform or Scrubs",
+      "desc_zh": "浅色系护理服，头发束起，仪容规范",
+      "desc_en": "Light nursing uniform or scrubs with hair tied back",
+      "suitable_for": ["医疗"],
+      "prompt_zh": "整洁浅色护理服，领口对称，头发放顺束起，不佩戴悬垂耳饰",
+      "prompt_en": "tidy light nursing uniform with symmetrical collar, hair tied back, no dangling earrings"
+    },
+    {
+      "id": "W-12",
+      "name_zh": "质感基础款（顾问向）",
+      "name_en": "Textured Basic",
+      "desc_zh": "有面料质感的纯色基础款，靠剪裁而非logo体现品位",
+      "desc_en": "Solid basics where cut and fabric texture carry taste instead of logos",
+      "suitable_for": ["专业服务", "创意"],
+      "prompt_zh": "剪裁利落的纯色基础款，面料质感在光下可辨，无标识无多余装饰",
+      "prompt_en": "clean-cut solid basics whose fabric texture reads under light, no marks and no surplus detail"
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "version": "0.1.0",
+  "updated": "2026-09-29",
+  "status": "untested-scaffold",
+  "purpose": "记录各生图模型在「保留本人五官身份」这一硬指标上的实测表现。工牌头像与普通写真最大的差别是：像不像本人是唯一的通过条件，好看是次要条件。这份矩阵是全项目唯一需要持续真人实测才能维护的资产，也是本项目的主要壁垒。",
+  "warning": "本版本所有分数均为 null。任何尚未填数的模型都不得对外声称已验证。请按 protocol 完成盲测后提交 PR 或商业版更新。",
+  "scoring_dimensions": {
+    "identity_fidelity": {
+      "label_zh": "身份保真度",
+      "scale": "1-5",
+      "definition": "5=本人与家人可一眼确认；4=熟悉同事可确认；3=需对照原图；2=神似但五官偏移；1=像另一个人",
+      "objective_proxy": "人脸向量余弦相似度（原图 vs 成图），建议同时报告均值与 P10 下限"
+    },
+    "spec_compliance": {
+      "label_zh": "规格可达性",
+      "scale": "pass|fail",
+      "definition": "在不做人工二次裁切的前提下，能否直接满足目标规格的头部占比、瞳孔线位置与底色要求"
+    },
+    "beauty_drift": {
+      "label_zh": "美颜漂移",
+      "scale": "0-3",
+      "definition": "0=未改动五官；3=被显著磨皮、瘦脸、放大眼睛。此项越高，工牌场景越不可用"
+    },
+    "batch_consistency": {
+      "label_zh": "批次一致性",
+      "scale": "1-5",
+      "definition": "同一组提示词连跑 10 次，光型、背景、构图与表情的离散程度。批量工牌的生死指标"
+    },
+    "failure_modes": {
+      "label_zh": "主要失败模式",
+      "scale": "list",
+      "examples": ["耳部畸变", "牙齿异常", "瞳孔不同轴", "发丝与背景粘连", "肤色整体偏红", "左右脸不对称放大"]
+    }
+  },
+  "protocol": {
+    "subjects": "至少 8 位志愿者（覆盖不同肤色、脸型、年龄段，需书面授权并约定撤除权）",
+    "source_images": "每人 3 张原生照：正面证件角度、45 度、自然光生活照",
+    "runs_per_subject_per_model": 5,
+    "prompt": "固定使用本项目 prompt_spec.py 的 --locked 输出，禁止逐次改词",
+    "blind_eval": "成图与原图混排，由 3 名未参与生成的评审判断「是否为同一人」，报告准确率",
+    "objective_metric": "统一人脸检测器下的 embedding 余弦相似度，报告 mean / P10",
+    "spec_metric": "对每张成图运行 check_spec.py，报告通过率",
+    "refresh": "模型版本每次更新重测一轮，记录 tested_with_version 与 tested_at"
+  },
+  "models": [
+    {
+      "key": "gpt-image",
+      "label": "GPT-Image 系列",
+      "tested": false,
+      "tested_with_version": null,
+      "tested_at": null,
+      "identity_fidelity": null,
+      "spec_compliance": null,
+      "beauty_drift": null,
+      "batch_consistency": null,
+      "identity_strategy": "参考图垫图",
+      "notes": "待实测"
+    },
+    {
+      "key": "nano-banana",
+      "label": "Nano Banana（Gemini 图像编辑）",
+      "tested": false,
+      "tested_with_version": null,
+      "tested_at": null,
+      "identity_fidelity": null,
+      "spec_compliance": null,
+      "beauty_drift": null,
+      "batch_consistency": null,
+      "identity_strategy": "原图直入编辑模式",
+      "notes": "编辑式模型通常身份保持更强，但对规格约束的服从度需单独测"
+    },
+    {
+      "key": "seedream",
+      "label": "Seedream",
+      "tested": false,
+      "tested_with_version": null,
+      "tested_at": null,
+      "identity_fidelity": null,
+      "spec_compliance": null,
+      "beauty_drift": null,
+      "batch_consistency": null,
+      "identity_strategy": "参考图垫图",
+      "notes": "待实测"
+    },
+    {
+      "key": "jimeng",
+      "label": "即梦",
+      "tested": false,
+      "tested_with_version": null,
+      "tested_at": null,
+      "identity_fidelity": null,
+      "spec_compliance": null,
+      "beauty_drift": null,
+      "batch_consistency": null,
+      "identity_strategy": "参考图垫图",
+      "notes": "国内工牌场景常用，需单独验证磨皮强度"
+    },
+    {
+      "key": "kling",
+      "label": "可灵",
+      "tested": false,
+      "tested_with_version": null,
+      "tested_at": null,
+      "identity_fidelity": null,
+      "spec_compliance": null,
+      "beauty_drift": null,
+      "batch_consistency": null,
+      "identity_strategy": "参考图垫图",
+      "notes": "待实测"
+    },
+    {
+      "key": "flux",
+      "label": "Flux",
+      "tested": false,
+      "tested_with_version": null,
+      "tested_at": null,
+      "identity_fidelity": null,
+      "spec_compliance": null,
+      "beauty_drift": null,
+      "batch_consistency": null,
+      "identity_strategy": "需要 Identity 插件",
+      "notes": "原生模型身份保持弱，必须搭配 PuLID / InstantID 类方案一并测评"
+    },
+    {
+      "key": "sdxl-pulid",
+      "label": "SDXL + PuLID / InstantID",
+      "tested": false,
+      "tested_with_version": null,
+      "tested_at": null,
+      "identity_fidelity": null,
+      "spec_compliance": null,
+      "beauty_drift": null,
+      "batch_consistency": null,
+      "identity_strategy": "本地身份注入，人脸数据不出本机",
+      "notes": "唯一可完全本地化的路线，隐私敏感客户的默认选择"
+    },
+    {
+      "key": "midjourney",
+      "label": "Midjourney",
+      "tested": false,
+      "tested_with_version": null,
+      "tested_at": null,
+      "identity_fidelity": null,
+      "spec_compliance": null,
+      "beauty_drift": null,
+      "batch_consistency": null,
+      "identity_strategy": "不推荐用于工牌",
+      "notes": "美学强但身份保真与规格服从通常不达标，测完可直接在文档里劝退"
+    }
+  ],
+  "contribution": "欢迎提交实测数据。PR 需附：测试模型版本号、参评人数、盲测准确率、embedding 相似度均值与 P10、check_spec.py 通过率截图。数据必须可复现，否则不予合并。"
+}
