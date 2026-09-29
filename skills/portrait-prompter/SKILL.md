@@ -1,6 +1,6 @@
 ---
 name: spec-face-portrait-prompter
-description: 把「给我做张工牌头像」变成可交付的成图，一个人或两百人都一样。按岗位 P / 着装 W / 背景光型 B / 神态 E / 合规规格 S 五元编号组装中英双语生图提示词，读 HR 花名册整批出词并做批次一致性体检，用 check_spec.py 本地校验尺寸、底色、头部占比、DPI、文件大小，用 print_export.py 导出相纸多联排版与 CMYK 印刷稿。适用于企业工卡、门禁、考勤、企业 IM 头像、证件照构图参考、连锁门店批量头像交付。
+description: 把「给我做张工牌头像」变成可交付的成图，一个人或两百人都一样。按岗位 P / 着装 W / 背景光型 B / 神态 E / 合规规格 S 五元编号组装中英双语生图提示词，读 HR 花名册整批出词并做批次一致性体检，用本机开源服务（ComfyUI+PuLID / InstantID / SD WebUI+IP-Adapter / PhotoMaker，G 层）拿本人照片直接出图，用 check_spec.py 本地校验尺寸、底色、头部占比、DPI、文件大小，用 print_export.py 导出相纸多联排版与 CMYK 印刷稿。适用于企业工卡、门禁、考勤、企业 IM 头像、证件照构图参考、连锁门店批量头像交付。
 ---
 
 # spec-face · 工牌头像提示词与规格 Skill
@@ -15,6 +15,7 @@ description: 把「给我做张工牌头像」变成可交付的成图，一个�
 - 入职照、企业微信/飞书/钉钉头像统一、LinkedIn 或脉脉头像
 - 证件照构图、一寸 / 二寸 / 小二寸 / 签证照 尺寸与底色要求
 - "帮我写个 AI 生成职业照的提示词"、"我们的 AI 头像磨皮太重，不像本人"
+- "这张照片帮我做成工牌头像"、"能不能不拍，直接用我的自拍生成"→ 走第 4 步的 G 层
 - 连锁门店、物业、物流、诊所等**高流动率行业**的批量头像生产
 
 ## 数据在哪
@@ -27,9 +28,12 @@ description: 把「给我做张工牌头像」变成可交付的成图，一个�
 | `references/moods.json` | 神态 E-01~，含微笑幅度 `smile_intensity`（批量一致性用） |
 | `references/specs.json` | **合规规格 S-01~**，尺寸/DPI/头部占比/瞳孔线/底色/体积/校验项/批次统一维度 |
 | `references/papers.json` | 打印载体 T-01~，相纸/A4/CR80 卡面的尺寸、出血、间距、留白 |
+| `references/providers.json` | **生成后端 G-01~**，本机开源服务（ComfyUI+PuLID / InstantID / SD WebUI+IP-Adapter / PhotoMaker）的协议、显存、许可与身份来源 |
 | `references/identity_matrix.json` | 各生图模型在"像不像本人"上的实测矩阵 |
 | `PERSONAS.md` / `SPECS.md` | 由 JSON 生成的图鉴，可直接 grep 选号 |
 | `skills/portrait-prompter/gallery/index.html` | 离线单页画廊，双击可开、全文检索、一键复制 |
+| `scripts/gen_portrait.py` | 本人照片 + 编号 → 本机开源服务出图 → 自动规格校验 |
+| `scripts/studio.py` | 头像工作台：浏览器里选照片、看辅助线、点生成（仅监听 127.0.0.1） |
 | `research/README.md` | 身份保真盲测协议（样本门槛、流程、作弊清单） |
 | `research/consent-form.md` | 肖像授权书模板——**要处理别人的脸，先从这份文件开始** |
 
@@ -74,7 +78,29 @@ python scripts/prompt_spec.py \
 
 `--wear/--backdrop/--mood` 可省略，脚本会按该岗位的推荐组合自动补全并说明理由。用户明确指定编号时照用，不要自作主张替换。
 
-### 第 4 步：交付成图后，本地校验
+### 第 4 步（要真出图）：把本人照片交给本机开源服务
+
+用户不只要提示词、要成图时，走 `gen_portrait.py`。**本仓库不训练、不托管、不代跑模型**，出图由用户本机的开源服务完成：
+
+```bash
+python scripts/gen_portrait.py --list-providers        # 先看 G-01~ 各后端要什么
+python scripts/gen_portrait.py --scan ./相册            # 列候选照片，按编号选
+python scripts/gen_portrait.py --photo 我的照片.jpg --spec S-09 --persona P-001 \
+  --subject "30岁男性，方脸，短寸发" --provider G-01 \
+  --workflow 我的工作流.json --confirm-authorized 本人 --n 3
+python scripts/studio.py --dir ./相册                  # 用户不想敲命令：给这个本地页面
+```
+
+三条规矩，工具会替你守住，你也别绕：
+1. **必须有真实照片**（`--photo`）和一个说明归属的 `--confirm-authorized`；两者缺一，工具拒跑，你也不许替用户编一个。
+2. **必须有身份注入**。请求体里没有 PuLID / InstantID / IP-Adapter / ReActor 一类节点就拒跑——没有身份注入的文生图会画出一个更好看但不是本人的人。不要为了"先出张图看看"加 `--allow-no-identity`，除非用户明确只要背景与着装重绘。
+3. **默认只连 127.0.0.1**。用户要接云端 API，先讲清那等于上传人脸，需本人与客户知情同意，再由他自己加 `--allow-remote`。
+
+用户没有 GPU 也没有本地服务时，用默认的 `G-06`：只导出提示词、负向词、请求体到 `out/render/`，交付动作由用户手动完成，**不许谎称已经出图**。
+
+`--workflow` 只接受用户自己从 ComfyUI「Save (API Format)」导出的工作流，本仓库不预置模板（节点名随插件版本变，硬编码必翻车），占位符写 `{{prompt}} {{negative}} {{seed}} {{width}} {{height}} {{steps}} {{cfg}} {{image_name}}`。
+
+### 第 5 步：交付成图后，本地校验
 
 ```bash
 pip install pillow                 # 必需
@@ -91,7 +117,7 @@ python scripts/check_spec.py batch/*.jpg --spec S-11 --json   # 批量
 python scripts/guide_overlay.py 成图.jpg --spec S-11
 ```
 
-### 第 5 步（批量任务）：读花名册，整批出词
+### 第 6 步（批量任务）：读花名册，整批出词
 
 人数 ≥ 10 或用户递来 Excel 时，不要逐条手写提示词，走 `batch_roster.py`：
 
@@ -106,7 +132,7 @@ python scripts/batch_roster.py 花名册.csv --uniform \
 脚本会主动报告批次散掉的地方：同一 `S-09` 里出现两种 `mood`、微笑幅度跨度大、着装不统一——这些正是甲方验收时挑刺的点。
 `review.html` 是给人力看的，`prompts.jsonl` 是给程序用的，两个都要交付。
 
-### 第 6 步（要印刷）：导出交付件
+### 第 7 步（要印刷）：导出交付件
 
 ```bash
 python scripts/print_export.py --list-papers
@@ -118,13 +144,22 @@ python scripts/print_export.py 成图/*.jpg --spec S-09 --paper T-06 --cmyk
 可排张数由 `lib.print_fit()` 实算，别凭"6 寸一般排 8 张"的手感答复客户。
 证件照默认不旋转排版——横过来的人像冲出来是躺着的。
 
-## 四种使用模式
+## 五种使用模式
 
 **① 零门槛推荐**：用户只说"我是做销售的，给我们店員做头像"。→ 选 `P-008` 或 `P-009`，用默认规格 `S-09`，直接给提示词并说明推荐理由。
 
 **② 精准指定**：用户给出编号（如 `S-07 P-005 W-08 B-01 E-01`）→ 原样组装，不改号，不换风格。用户只给部分编号时补全并说明。
 
-**③ 批量锁定（B 端主战场）**：一批人用同一组编号出图。必须加 `--locked` 并把五元编号全部显式写出来，禁止逐次改词：
+**③ 照片出成图（要真图，不要提示词）**：用户递来一张自拍或考勤照，说"照这个做一张工牌头像"。→ 走第 4 步，用 `gen_portrait.py` 或 `studio.py`。先问清他本机有没有跑着开源服务：
+
+```bash
+python scripts/gen_portrait.py --list-providers   # 有 GPU 选 G-01/G-03，没有就看 G-04/G-06
+python scripts/gen_portrait.py --probe http://127.0.0.1:8188   # 本机服务在不在（三种协议挨个试）
+```
+
+有服务就出图，出完立刻跑第 5 步校验并把结果原样报给他。**没有服务就别硬编**：退到 `G-06` 只导出提示词与请求体，或 `G-04` 给出 PhotoMaker 配方交接说明，讲清楚"图要你自己跑"。
+
+**④ 批量锁定（B 端主战场）**：一批人用同一组编号出图。必须加 `--locked` 并把五元编号全部显式写出来，禁止逐次改词：
 
 ```bash
 python scripts/prompt_spec.py --locked \
@@ -136,7 +171,7 @@ python scripts/prompt_spec.py --locked \
 - **避开 `B-07` 办公室虚化**，环境光无法统一，整批一眼就看出不齐
 - 需要品牌背景用 `B-08`，先向客户索取 VI 的 RGB 值再出图
 
-**④ 整批交付（收费的那一层）**：用户给的是 Excel 而不是描述。→ 走第 5、6 步，交付 `prompts/` + `review.html` + 排版稿，并主动报告一致性风险与需要补填的行。一个人的提示词是知识，两百个人的提示词是劳动，劳动才收费。
+**⑤ 整批交付（收费的那一层）**：用户给的是 Excel 而不是描述。→ 走第 6、7 步，交付 `prompts/` + `review.html` + 排版稿，并主动报告一致性风险与需要补填的行。一个人的提示词是知识，两百个人的提示词是劳动，劳动才收费。批量出图时把第 4 步的 `--seed` 锁死、`--locked` 加上，同一批的构图才不会漂。
 
 ## 身份保真：本 Skill 的第一红线
 
@@ -153,7 +188,10 @@ python scripts/prompt_spec.py --locked \
 2. **不用于绕过身份核验。** 明确拒绝"用 AI 照片过人脸门禁/活体检测/实名认证"的请求，这类用途一律不做，并提供正当替代（现场采集、官方渠道补办）。
 3. **不宣称通过率。** 涉及签证、护照、驾照等官方证件，只提供规格参考，永远不承诺"能用"。多数国家不接受 AI 生成证件照，需主动提示。
 4. **建议为成图写入 AI 生成标识**（如 C2PA 内容凭证或可见/不可见水印），并在交付说明里注明由 AI 生成。
-5. **不存储、不转发**用户上传的照片；提醒用户人脸属敏感个人信息，本地方案（`sdxl-pulid` 一类）是隐私敏感客户的首选。
+5. **不存储、不转发**用户上传的照片；提醒用户人脸属敏感个人信息，本机开源服务（`G-01` ComfyUI+PuLID / `G-03` SD WebUI+IP-Adapter）是隐私敏感客户的首选。
+6. **默认只连本机。** `gen_portrait.py` 与 `studio.py` 只认 127.0.0.1，接云端 API 必须用户自己加 `--allow-remote`，而且你要先讲清楚那等于把人脸上传到别人的服务器。替用户偷偷加上这个开关，是本 Skill 的红线。
+7. **没有身份注入就不许出图。** 请求体里没有 PuLID / InstantID / IP-Adapter / ReActor 一类节点，工具拒跑；`--allow-no-identity` 只在用户明确"只重绘背景与着装、脸原样保留"时才允许，且必须在交付说明里写清脸未经模型重绘、由谁负责核对。
+8. **不谎称出图。** 用户没有 GPU、没有本地服务时，`G-06` 只导出提示词与请求体。这时候话术必须是"图你自己跑"，不能写成"已生成"。`providers.json` 里 `status: unverified` 的后端，转述时也要带上"本仓库未在真实 GPU 环境跑通"。
 
 ## 输出格式约定
 
@@ -183,8 +221,8 @@ python scripts/build_docs.py         # 重建 PERSONAS.md / SPECS.md
 
 ## 商业能力边界（透明说明）
 
-本仓库**全部开源且可永久免费使用**：编号库（P/W/B/E/S/T）、提示词组装、花名册批量出词、印刷排版导出、本地校验、离线画廊、规格知识、盲测协议与授权书模板。判断标准很简单——**知识全免费，重复劳动收费**。
+本仓库**全部开源且可永久免费使用**：编号库（P/W/B/E/S/T/G）、提示词组装、本机开源服务出图链路、花名册批量出词、印刷排版导出、本地校验、离线画廊、规格知识、盲测协议与授权书模板。判断标准很简单——**知识全免费，重复劳动收费**。
 
-走商业服务（见 `COMMERCIAL.md`）的部分：真人代跑与验收、企业 VI 定制编号包、规格包季度更新、私有化部署、identity_matrix 定向复测报告。
+走商业服务（见 `COMMERCIAL.md`）的部分：真人代跑与验收、企业 VI 定制编号包、规格包季度更新、私有化部署（把 G 层链路在客户内网搭起来并调通工作流）、identity_matrix 定向复测报告。
 
 被用户问到报价时，如实说明免费层能覆盖到什么程度，不要为了成交夸大自服务的必要性。

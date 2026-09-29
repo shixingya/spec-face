@@ -198,3 +198,28 @@ python scripts/print_export.py 成图/*.jpg --spec S-09 --paper T-06 --cmyk
 
 送件口径：**冲印店收 `.jpg`（RGB），印刷厂/卡厂收 `_cmyk.tif`，自助照片机收 `.jpg` 且不要出血。**
 
+## 生成后端（G）：把照片交给谁
+
+> 由 `scripts/build_docs.py` 从 `references/providers.json` 生成。本仓库不训练模型、不托管模型：出图由你**本机**跑的开源服务完成，默认端点全部是 127.0.0.1。
+
+| 编号 | 后端 | 协议 | 默认端点 | 显存 | 身份来源 | 许可 | 状态 |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| **G-01** | ComfyUI + PuLID（本机） | ComfyUI /prompt | `http://127.0.0.1:8188` | ≥12GB | PuLID 把人脸 embedding 注入交叉注意力，底模不动，身份来自你给的那一张照片 | ComfyUI GPL-3.0；SDXL 权重受 OpenRAIL++ 约束，商用前核对权重许可 | 未实测（协议形状已核对） |
+| **G-02** | ComfyUI + InstantID（本机） | ComfyUI /prompt | `http://127.0.0.1:8188` | ≥12GB | InstantID：人脸关键点 + face embedding 双路控制，对单张照片友好 | ComfyUI GPL-3.0；InstantID 权重为 CC-BY-NC 系，商用必须逐条核对 | 未实测（协议形状已核对） |
+| **G-03** | SD WebUI / Forge + IP-Adapter-FaceID（本机） | WebUI /sdapi/v1/txt2img | `http://127.0.0.1:7860` | ≥6GB | IP-Adapter-FaceID / ReActor 扩展注入身份；协议是标准 /sdapi/v1/txt2img | a1111-webui AGPL-3.0；扩展与权重各自另算 | 未实测（协议形状已核对） |
+| **G-04** | Diffusers PhotoMaker（本地脚本，不用起服务） | 本地脚本（不代跑） | `—` | ≥8GB | PhotoMaker：堆叠 1–4 张同一人的照片做身份，风格偏向写实人像 | PhotoMaker 权重 CC-BY-NC-4.0，**不可商用** | 未实测（协议形状已核对） |
+| **G-05** | OpenAI 兼容 /v1/images 端点（本机推理服务） | OpenAI 兼容 /v1/images | `http://127.0.0.1:8000` | — | 取决于服务端；本工具只负责把 size/prompt/参考图递过去 | 取决于服务端 | 未实测（协议形状已核对） |
+| **G-06** | 只导出提示词与请求体（离线手工） | 只导出产物 | `—` | — | 无：这一条不发起任何请求，把出词结果和请求体写到 out/render/ 让你自己粘 | MIT（本仓库产物） | 本机实测通过 |
+
+两条硬门写死在 `gen_portrait.py` 里，不在数据里：
+
+1. **身份注入门**：请求体里找不到身份注入节点/扩展（PuLID / InstantID / IP-Adapter / ReActor 等）就拒跑。没有身份注入的文生图会画出一个更好看但不是本人的人，而「像不像本人」是工牌头像唯一的不通过条件。
+2. **本机门**：端点非回环地址时必须显式加 `--allow-remote`，因为那等于把人脸上传给第三方。
+
+```bash
+python scripts/gen_portrait.py --list-providers
+python scripts/gen_portrait.py --photo 我的照片.jpg --spec S-09 --persona P-001 \
+  --subject "30岁男性，方脸，短寸发" --provider G-01 --workflow 我的工作流.json --confirm-authorized 本人
+python scripts/studio.py --dir ./相册        # 不想敲命令：浏览器里选照片、看辅助线、点生成
+```
+

@@ -11,7 +11,10 @@ import sys
 
 import lib
 
-ID_RE = re.compile(r"^[PWBEST]-\d{2,3}$")
+ID_RE = re.compile(r"^[PWBESTG]-\d{2,3}$")
+PROVIDER_KINDS = {"http-comfyui", "http-webui", "http-openai-images", "recipe", "payload"}
+PROVIDER_REQUIRED = ["id", "name_zh", "name_en", "kind", "identity_method", "base_model",
+                     "requires", "vram_gb", "license", "status", "notes_zh"]
 KNOWN_CHECKS = {
     "px", "px_min", "aspect", "dpi", "max_kb", "format", "bg_color",
     "head_ratio", "eye_line", "safe_circle",
@@ -136,6 +139,42 @@ def validate_papers(errors):
                 err(errors, where, iid, f"{sid} 在 {t['name_zh']} 上一张都排不下（默认留白与间距）")
 
 
+def validate_providers(errors):
+    """生成后端登记表最要命的两件事：协议形状没人认、端点悄悄指向云端。
+    所以 kind 必须是 gen_portrait.py 真认识的，默认端点必须是回环地址。"""
+    meta = json.load(open(os.path.join(lib.REFS, lib.FILES["providers"]), encoding="utf-8"))
+    items = meta["providers"]
+    seen = set()
+    for p in items:
+        iid = p.get("id", "<无 id>")
+        for field in PROVIDER_REQUIRED:
+            if field not in p or p[field] in (None, "", [], {}):
+                if field not in p:
+                    err(errors, "providers", iid, f"缺必填字段 {field}")
+        if not ID_RE.match(str(iid)) or not iid.startswith("G-"):
+            err(errors, "providers", iid, "后端编号应为 G-数字")
+        if iid in seen:
+            err(errors, "providers", iid, "编号重复")
+        seen.add(iid)
+        if p.get("kind") not in PROVIDER_KINDS:
+            err(errors, "providers", iid, f"kind「{p.get('kind')}」gen_portrait.py 不认，会被当成 payload 静默跳过")
+        if p.get("status") not in ("unverified", "verified"):
+            err(errors, "providers", iid, f"status 非法：{p.get('status')}")
+        if p.get("status") == "verified" and not p.get("evidence"):
+            err(errors, "providers", iid, "自称 verified 却没有 evidence，等于虚假声明")
+        endpoint = p.get("endpoint_default")
+        if p.get("kind", "").startswith("http") and not endpoint:
+            err(errors, "providers", iid, "HTTP 类后端必须给 endpoint_default")
+        if endpoint and not any(h in endpoint for h in ("127.", "localhost", "[::1]")):
+            err(errors, "providers", iid,
+                f"默认端点 {endpoint} 不是回环地址：默认配置就把人脸送出本机")
+    for kw in meta.get("identity_keywords", []):
+        if kw != kw.lower() or len(kw) < 4:
+            err(errors, "providers", "identity_keywords", f"关键词「{kw}」太短或含大写，身份门会误判")
+    if len(meta.get("identity_keywords", [])) < 5:
+        err(errors, "providers", "identity_keywords", "关键词过少，身份门会误拦合法工作流")
+
+
 def validate_identity(errors):
     path = os.path.join(lib.REFS, "identity_matrix.json")
     data = json.load(open(path, encoding="utf-8"))
@@ -166,13 +205,17 @@ def main():
     validate_sections(errors)
     validate_specs(errors)
     validate_papers(errors)
+    validate_providers(errors)
     matrix = validate_identity(errors)
 
-    counts = {s: len(lib.load(s)) for s in ("personas", "wear", "backdrops", "moods", "specs", "papers")}
+    counts = {s: len(lib.load(s)) for s in ("personas", "wear", "backdrops", "moods", "specs", "papers", "providers")}
     tested = sum(1 for m in matrix["models"] if m["tested"])
     print("资产统计  " + "  ".join(f"{k}={v}" for k, v in counts.items()))
     print(f"模型矩阵  共 {len(matrix['models'])} 个，已实测 {tested} 个"
           + ("（全部待测——这一块的数据要靠人跑出来，见 scripts/score_matrix.py）" if tested == 0 else ""))
+    verified = sum(1 for p in lib.load("providers") if p["status"] == "verified")
+    print(f"生成后端  共 {counts['providers']} 个，本机实测通过 {verified} 个"
+          "（其余标 unverified：协议形状对，但没在真实 GPU 上跑通过）")
 
     if errors:
         print(f"\n发现 {len(errors)} 个问题：")

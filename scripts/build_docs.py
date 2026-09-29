@@ -201,6 +201,35 @@ def build_specs():
         w(f)
         w(f, "送件口径：**冲印店收 `.jpg`（RGB），印刷厂/卡厂收 `_cmyk.tif`，自助照片机收 `.jpg` 且不要出血。**")
         w(f)
+        w(f, "## 生成后端（G）：把照片交给谁")
+        w(f)
+        w(f, "> 由 `scripts/build_docs.py` 从 `references/providers.json` 生成。"
+             "本仓库不训练模型、不托管模型：出图由你**本机**跑的开源服务完成，默认端点全部是 127.0.0.1。")
+        w(f)
+        w(f, "| 编号 | 后端 | 协议 | 默认端点 | 显存 | 身份来源 | 许可 | 状态 |")
+        w(f, "| :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- |")
+        for g in lib.load("providers"):
+            kind = {"http-comfyui": "ComfyUI /prompt", "http-webui": "WebUI /sdapi/v1/txt2img",
+                    "http-openai-images": "OpenAI 兼容 /v1/images", "recipe": "本地脚本（不代跑）",
+                    "payload": "只导出产物"}.get(g["kind"], g["kind"])
+            status = "本机实测通过" if g["status"] == "verified" else "未实测（协议形状已核对）"
+            vram = f"≥{g['vram_gb']}GB" if g["vram_gb"] else "—"
+            w(f, f"| **{g['id']}** | {g['name_zh']} | {kind} | `{g['endpoint_default'] or '—'}` "
+                 f"| {vram} | {g['identity_method']} | {g['license']} | {status} |")
+        w(f)
+        w(f, "两条硬门写死在 `gen_portrait.py` 里，不在数据里：")
+        w(f)
+        w(f, "1. **身份注入门**：请求体里找不到身份注入节点/扩展（PuLID / InstantID / IP-Adapter / ReActor 等）就拒跑。"
+             "没有身份注入的文生图会画出一个更好看但不是本人的人，而「像不像本人」是工牌头像唯一的不通过条件。")
+        w(f, "2. **本机门**：端点非回环地址时必须显式加 `--allow-remote`，因为那等于把人脸上传给第三方。")
+        w(f)
+        w(f, "```bash")
+        w(f, "python scripts/gen_portrait.py --list-providers")
+        w(f, "python scripts/gen_portrait.py --photo 我的照片.jpg --spec S-09 --persona P-001 \\")
+        w(f, "  --subject \"30岁男性，方脸，短寸发\" --provider G-01 --workflow 我的工作流.json --confirm-authorized 本人")
+        w(f, "python scripts/studio.py --dir ./相册        # 不想敲命令：浏览器里选照片、看辅助线、点生成")
+        w(f, "```")
+        w(f)
 
 
 if __name__ == "__main__":

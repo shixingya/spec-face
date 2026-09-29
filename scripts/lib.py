@@ -30,6 +30,7 @@ FILES = {
     "specs": "specs.json",
     "identity": "identity_matrix.json",
     "papers": "papers.json",
+    "providers": "providers.json",
 }
 
 PLURAL_KEY = {
@@ -39,6 +40,7 @@ PLURAL_KEY = {
     "moods": "moods",
     "specs": "specs",
     "papers": "papers",
+    "providers": "providers",
 }
 
 MM_PER_IN = 25.4

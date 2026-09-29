@@ -65,12 +65,12 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 40px;color:var(--mut);font-
 <body>
 <header>
   <h1>spec-face 编号画廊</h1>
-  <div class="sub">选个编号，出张能直接印进工卡的职业照 · 岗位 __NP__ / 着装 __NW__ / 背景光型 __NB__ / 神态 __NE__ / 合规规格 __NS__ / 打印载体 __NT__</div>
+  <div class="sub">选个编号，出张能直接印进工卡的职业照 · 岗位 __NP__ / 着装 __NW__ / 背景光型 __NB__ / 神态 __NE__ / 合规规格 __NS__ / 打印载体 __NT__ / 生成后端 __NG__</div>
   <div class="bar">
     <input id="q" placeholder="搜索编号、岗位、行业、关键词…（如 P-001 / 金融 / 白底）">
     <nav>
       <button data-t="p" class="on">岗位</button><button data-t="w">着装</button>
-      <button data-t="b">背景光型</button><button data-t="e">神态</button><button data-t="s">合规规格</button><button data-t="t">打印载体</button>
+      <button data-t="b">背景光型</button><button data-t="e">神态</button><button data-t="s">合规规格</button><button data-t="t">打印载体</button><button data-t="g">生成后端</button>
     </nav><span id="n"></span>
   </div>
 </header>
@@ -246,11 +246,32 @@ def paper_cards():
     return out
 
 
+def provider_cards():
+    out = []
+    for g in lib.load("providers"):
+        badge = ('<span class="tag">本机实测通过</span>' if g["status"] == "verified"
+                 else '<span class="tag warn">协议形状已核对 · 未在真实 GPU 实测</span>')
+        vram = f"≥{g['vram_gb']}GB" if g["vram_gb"] else "无本地显存要求"
+        rows = (f'<div class="row"><b>协议</b> {esc(g["kind"])} · 默认端点 {esc(g["endpoint_default"] or "—")} · '
+                f'{esc(vram)}</div>'
+                f'<div class="row"><b>身份来源</b> {esc(g["identity_method"])}</div>'
+                f'<div class="row"><b>底模</b> {esc(g["base_model"])}</div>'
+                f'<div class="row"><b>需要</b> {esc("；".join(g["requires"]) or "无")}</div>'
+                f'<div class="row"><b>许可</b> {esc(g["license"])}</div>'
+                f'<div class="row mut">{esc(g["notes_zh"])}</div>')
+        out.append({"search": " ".join([g["id"], g["name_zh"], g["name_en"], g["kind"],
+                                        g["identity_method"], g["license"], g["notes_zh"]]),
+                    "html": f'<div class="id">{esc(g["id"])}</div><div class="t">{esc(g["name_zh"])}'
+                            f' <span class="en">{esc(g["name_en"])}</span> {badge}</div>{rows}'})
+    return out
+
+
 def main():
     lib.force_utf8()
-    counts = {k: len(lib.load(k)) for k in ("personas", "wear", "backdrops", "moods", "specs", "papers")}
+    counts = {k: len(lib.load(k)) for k in
+              ("personas", "wear", "backdrops", "moods", "specs", "papers", "providers")}
     data = {"p": persona_cards(), "w": wear_cards(), "b": backdrop_cards(),
-            "e": mood_cards(), "s": spec_cards(), "t": paper_cards()}
+            "e": mood_cards(), "s": spec_cards(), "t": paper_cards(), "g": provider_cards()}
     out = (PAGE
            .replace("__DATA__", json.dumps(data, ensure_ascii=False))
            .replace("__OBJ__", "{{对象描述}}")
@@ -259,7 +280,8 @@ def main():
            .replace("__NB__", str(counts["backdrops"]))
            .replace("__NE__", str(counts["moods"]))
            .replace("__NS__", str(counts["specs"]))
-           .replace("__NT__", str(counts["papers"])))
+           .replace("__NT__", str(counts["papers"]))
+           .replace("__NG__", str(counts["providers"])))
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as handle:
         handle.write(out)
