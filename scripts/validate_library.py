@@ -11,7 +11,7 @@ import sys
 
 import lib
 
-ID_RE = re.compile(r"^[PWBES]-\d{2,3}$")
+ID_RE = re.compile(r"^[PWBEST]-\d{2,3}$")
 KNOWN_CHECKS = {
     "px", "px_min", "aspect", "dpi", "max_kb", "format", "bg_color",
     "head_ratio", "eye_line", "safe_circle",
@@ -26,6 +26,8 @@ REQUIRED = {
     "specs": ["id", "name_zh", "name_en", "use_for", "px", "dpi", "aspect", "head_height_ratio",
               "eye_line_ratio", "bg_name", "bg_name_en", "max_kb", "formats", "expression", "expression_en",
               "checks", "status"],
+    "papers": ["id", "name_zh", "name_en", "size_mm", "dpi_default", "bleed_mm_default",
+               "gap_mm_default", "margin_mm_default", "orientation", "layout", "common_specs", "notes_zh", "status"],
 }
 
 
@@ -35,7 +37,7 @@ def err(errors, where, item_id, msg):
 
 def validate_sections(errors):
     ids = {}
-    for section in ("personas", "wear", "backdrops", "moods", "specs"):
+    for section in ("personas", "wear", "backdrops", "moods", "specs", "papers"):
         items = lib.load(section)
         ids[section] = {i["id"] for i in items}
         seen = set()
@@ -97,6 +99,41 @@ def validate_specs(errors):
         if abs(float(num) / float(den) - s["px"][0] / s["px"][1]) > 0.05:
             err(errors, where, iid,
                 f"aspect {s['aspect']} 与 px {s['px']} 不匹配（差 >5%），出图会被裁歪")
+        for field in s.get("batch_uniform", []):
+            if field not in ("mood", "wear", "backdrop", "persona"):
+                err(errors, where, iid, f"batch_uniform 含未知维度 {field}，batch_roster.py 不会执行它")
+            elif s.get("expression", "") .find("统一") < 0 and s.get("expression", "").find("锁定") < 0:
+                err(errors, where, iid, f"声明了 batch_uniform={field} 但 expression 没写统一要求，规则与措辞会打架")
+
+
+def validate_papers(errors):
+    """纸张库最要命的是「纸上排不下」，所以这里直接用排版函数试排一次。"""
+    spec_index = lib.index("specs")
+    for t in lib.load("papers"):
+        where, iid = "papers", t["id"]
+        if len(t["size_mm"]) != 2 or not all(isinstance(v, (int, float)) and v > 0 for v in t["size_mm"]):
+            err(errors, where, iid, f"size_mm 需为两个正数 [宽, 高]，实际 {t['size_mm']}")
+            continue
+        if t["orientation"] not in ("portrait", "landscape", "auto"):
+            err(errors, where, iid, f"orientation 非法：{t['orientation']}")
+        if t["status"] not in ("stable", "needs_verification"):
+            err(errors, where, iid, f"status 非法：{t['status']}")
+        for key in ("bleed_mm_default", "gap_mm_default", "margin_mm_default"):
+            if not isinstance(t[key], (int, float)) or t[key] < 0:
+                err(errors, where, iid, f"{key} 需为非负数，实际 {t[key]}")
+        if t["margin_mm_default"] * 2 >= min(t["size_mm"]):
+            err(errors, where, iid, "margin_mm_default 已经吃掉整张纸，排版必败")
+        for sid in t["common_specs"]:
+            s = spec_index.get(sid)
+            if s is None:
+                err(errors, where, iid, f"common_specs 引用了不存在的 {sid}")
+                continue
+            # 证件照按整张照片算，工卡按卡面上的头像窗算；口径与 print_export.py 完全一致
+            count = lib.print_fit(t, s)
+            if count is None:
+                err(errors, where, iid, f"{sid} 没有物理尺寸，无法验证能否排下")
+            elif count == 0:
+                err(errors, where, iid, f"{sid} 在 {t['name_zh']} 上一张都排不下（默认留白与间距）")
 
 
 def validate_identity(errors):
@@ -107,7 +144,7 @@ def validate_identity(errors):
     for m in data["models"]:
         iid = m["key"]
         for field in ("label", "tested", "identity_strategy", "identity_fidelity", "beauty_drift",
-                      "batch_consistency", "spec_compliance", "notes"):
+                      "batch_consistency", "spec_compliance", "sample_size", "notes"):
             if field not in m:
                 err(errors, "identity", iid, f"缺字段 {field}")
         if m.get("tested") and any(m.get(k) is None for k in
@@ -115,6 +152,11 @@ def validate_identity(errors):
             err(errors, "identity", iid, "tested=true 但分数为空，属于虚假声明")
         if m.get("tested") and not (m.get("tested_with_version") and m.get("tested_at")):
             err(errors, "identity", iid, "tested=true 必须写明 tested_with_version 与 tested_at")
+        if m.get("tested") and not m.get("evidence"):
+            err(errors, "identity", iid, "tested=true 但没有 evidence，读者无从复核")
+        size = m.get("sample_size") or {}
+        if m.get("tested") and not size.get("subjects"):
+            err(errors, "identity", iid, "tested=true 但 sample_size.subjects 为空，样本量不明")
     return data
 
 
@@ -123,13 +165,14 @@ def main():
     errors = []
     validate_sections(errors)
     validate_specs(errors)
+    validate_papers(errors)
     matrix = validate_identity(errors)
 
-    counts = {s: len(lib.load(s)) for s in ("personas", "wear", "backdrops", "moods", "specs")}
+    counts = {s: len(lib.load(s)) for s in ("personas", "wear", "backdrops", "moods", "specs", "papers")}
     tested = sum(1 for m in matrix["models"] if m["tested"])
     print("资产统计  " + "  ".join(f"{k}={v}" for k, v in counts.items()))
     print(f"模型矩阵  共 {len(matrix['models'])} 个，已实测 {tested} 个"
-          + ("（v1 全部待测，符合预期）" if tested == 0 else ""))
+          + ("（全部待测——这一块的数据要靠人跑出来，见 scripts/score_matrix.py）" if tested == 0 else ""))
 
     if errors:
         print(f"\n发现 {len(errors)} 个问题：")

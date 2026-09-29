@@ -44,17 +44,26 @@ def measure_head_ratio(path):
 
 
 def border_color(path):
+    """底色取「背景最可能出现的地方」：顶边和侧边上部，用中位数而不是均值。
+
+    整圈边框取样的话，肩膀和头发会把白底拉成灰色，一张合格的证件照反而被判不通过。
+    """
     img = Image.open(path).convert("RGB")
     w, h = img.size
-    strip, step = [], max(1, (w * h) // 400)
+    step = max(1, (w * h) // 400)
+    samples = []
     for x in range(0, w, step):
-        strip.append(img.getpixel((x, 0)))
-        strip.append(img.getpixel((x, h - 1)))
-    for y in range(0, h, step):
-        strip.append(img.getpixel((0, y)))
-        strip.append(img.getpixel((w - 1, y)))
-    n = len(strip)
-    return tuple(round(sum(c[i] for c in strip) / n) for i in range(3))
+        samples.append(img.getpixel((x, 0)))
+        samples.append(img.getpixel((x, min(h - 1, int(h * 0.04)))))
+    for y in range(0, int(h * 0.35), max(1, step // 2)):
+        samples.append(img.getpixel((0, y)))
+        samples.append(img.getpixel((w - 1, y)))
+    def med(seq):
+        seq = sorted(seq)
+        mid = len(seq) // 2
+        return round((seq[mid - 1] + seq[mid]) / 2) if len(seq) % 2 == 0 else seq[mid]
+
+    return tuple(med(channel) for channel in zip(*samples))
 
 
 def check(path, spec):
@@ -100,7 +109,7 @@ def check(path, spec):
         target = tuple(spec["bg_rgb"])
         tol = spec.get("bg_tolerance") or 12
         worst = max(abs(a - b) for a, b in zip(rgb, target))
-        add("bg_color", worst <= tol, f"边框均色 rgb{rgb}，目标 rgb{target}±{tol}，最大偏差 {worst}")
+        add("bg_color", worst <= tol, f"背景取样中位色 rgb{rgb}（顶边+侧边上部），目标 rgb{target}±{tol}，最大偏差 {worst}")
     else:
         add("bg_color", "SKIP", f"本规格不限定底色（{spec['bg_name']}）")
 
@@ -154,7 +163,7 @@ def main(argv=None):
                 mark = {"PASS": "✓", "FAIL": "✗", "SKIP": "-", True: "✓", False: "✗"}[row["result"]]
                 print(f"  [{mark}] {row['check']:<12} {row['detail']}")
 
-    failed = [f for rows in report.values() for r in rows if r["result"] in (False, "FAIL")]
+    failed = [r for rows in report.values() for r in rows if r["result"] in (False, "FAIL")]
     skipped = [r for rows in report.values() for r in rows if r["result"] == "SKIP"]
     if not args.as_json and skipped:
         print(f"\n{len(skipped)} 项跳过：本工具不谎报通过。人工目视确认后再交付。")

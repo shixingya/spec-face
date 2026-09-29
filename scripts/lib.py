@@ -1,8 +1,13 @@
 """spec-face 资产加载与提示词组装的公共库。"""
 
+import datetime
 import json
 import os
 import sys
+
+
+def today():
+    return datetime.date.today().isoformat()
 
 
 def force_utf8():
@@ -24,6 +29,7 @@ FILES = {
     "moods": "moods.json",
     "specs": "specs.json",
     "identity": "identity_matrix.json",
+    "papers": "papers.json",
 }
 
 PLURAL_KEY = {
@@ -32,7 +38,68 @@ PLURAL_KEY = {
     "backdrops": "backdrops",
     "moods": "moods",
     "specs": "specs",
+    "papers": "papers",
 }
+
+MM_PER_IN = 25.4
+
+
+def mm_to_px(mm, dpi):
+    return round(mm / MM_PER_IN * dpi)
+
+
+def px_to_mm(px, dpi):
+    return px * MM_PER_IN / dpi
+
+
+def fit_grid(sheet_mm, cell_mm, gap_mm, margin_mm):
+    """在纸上按留白与刀口间距能排几行几列。向下取整：排不下就是排不下，不硬塞。"""
+    usable_w = sheet_mm[0] - 2 * margin_mm
+    usable_h = sheet_mm[1] - 2 * margin_mm
+    cell_w, cell_h = cell_mm
+    cols = int((usable_w + gap_mm) // (cell_w + gap_mm))
+    rows = int((usable_h + gap_mm) // (cell_h + gap_mm))
+    if cols < 1 or rows < 1:
+        return 0, 0
+    return cols, rows
+
+
+def best_grid(sheet_mm, cell_mm, gap_mm, margin_mm, allow_rotate=True):
+    """横竖两种摆法里选排得多的那种；数量相同则选纸面利用率高的。"""
+    options = [((cell_mm[0], cell_mm[1]), False)]
+    if allow_rotate:
+        options.append(((cell_mm[1], cell_mm[0]), True))
+    best = None
+    for size, rotated in options:
+        cols, rows = fit_grid(sheet_mm, size, gap_mm, margin_mm)
+        count = cols * rows
+        if count == 0:
+            continue
+        used = (cols * size[0] + (cols - 1) * gap_mm) * (rows * size[1] + (rows - 1) * gap_mm)
+        if best is None or (count, used) > (best["count"], best["used_area"]):
+            best = {"cols": cols, "rows": rows, "count": count, "cell_mm": size,
+                    "rotated": rotated, "used_area": used}
+    return best
+
+
+def print_fit(paper, spec, allow_rotate=False):
+    """纸张 × 规格的实算可排张数。print_export.py、画廊、SPECS.md 共用这一个口径，
+    免得文档里写 12 张、脚本算出 8 张。整版单张载体（卡面）永远是 1。"""
+    cell = spec.get("size_mm") or spec.get("portrait_area_mm")
+    if not cell:
+        return None
+    bleed = paper.get("bleed_mm_default", 0)
+    gap = paper.get("gap_mm_default", 0)
+    margin = paper.get("margin_mm_default", 0)
+    sheet = list(paper["size_mm"])
+    if paper.get("orientation") == "landscape":
+        sheet = [sheet[1], sheet[0]]
+    if paper.get("layout") == "single":
+        need = [cell[0] + 2 * bleed, cell[1] + 2 * bleed]
+        fits = all(need[i] <= sheet[i] - 2 * margin for i in (0, 1))
+        return 1 if fits else 0
+    grid = best_grid(sheet, [cell[0] + 2 * bleed, cell[1] + 2 * bleed], gap, margin, allow_rotate)
+    return grid["count"] if grid else 0
 
 
 def load(section):
@@ -53,6 +120,18 @@ def pick(section, item_id):
     if found is None:
         valid = ", ".join(sorted(index(section)))
         raise SystemExit(f"编号错误：{item_id} 不是有效的{section}编号。可用：{valid}")
+    return found
+
+
+def paper_index(item_id):
+    """papers.json 顶层还有 conventions/排版口径说明，不能套 load() 的裸数组约定。"""
+    path = os.path.join(REFS, FILES["papers"])
+    with open(path, encoding="utf-8") as handle:
+        items = json.load(handle)["papers"]
+    found = {i["id"]: i for i in items}.get(item_id)
+    if found is None:
+        valid = ", ".join(sorted(i["id"] for i in items))
+        raise SystemExit(f"编号错误：{item_id} 不是有效的纸张编号。可用：{valid}")
     return found
 
 

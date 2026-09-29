@@ -1,6 +1,6 @@
 ---
 name: spec-face-portrait-prompter
-description: 把「给我做张工牌头像」变成可交付的成图。按岗位 P / 着装 W / 背景光型 B / 神态 E / 合规规格 S 五元编号组装中英双语生图提示词，输出交付前自检清单，并用 check_spec.py 本地校验尺寸、底色、头部占比、DPI、文件大小。适用于企业工卡、门禁、考勤、企业 IM 头像、证件照构图参考。
+description: 把「给我做张工牌头像」变成可交付的成图，一个人或两百人都一样。按岗位 P / 着装 W / 背景光型 B / 神态 E / 合规规格 S 五元编号组装中英双语生图提示词，读 HR 花名册整批出词并做批次一致性体检，用 check_spec.py 本地校验尺寸、底色、头部占比、DPI、文件大小，用 print_export.py 导出相纸多联排版与 CMYK 印刷稿。适用于企业工卡、门禁、考勤、企业 IM 头像、证件照构图参考、连锁门店批量头像交付。
 ---
 
 # spec-face · 工牌头像提示词与规格 Skill
@@ -25,10 +25,13 @@ description: 把「给我做张工牌头像」变成可交付的成图。按岗�
 | `references/wear.json` | 着装仪容 W-01~ |
 | `references/backdrops.json` | 背景与光型 B-01~，含可校验目标色 `bg_rgb` 与容差 |
 | `references/moods.json` | 神态 E-01~，含微笑幅度 `smile_intensity`（批量一致性用） |
-| `references/specs.json` | **合规规格 S-01~**，尺寸/DPI/头部占比/瞳孔线/底色/体积/校验项 |
+| `references/specs.json` | **合规规格 S-01~**，尺寸/DPI/头部占比/瞳孔线/底色/体积/校验项/批次统一维度 |
+| `references/papers.json` | 打印载体 T-01~，相纸/A4/CR80 卡面的尺寸、出血、间距、留白 |
 | `references/identity_matrix.json` | 各生图模型在"像不像本人"上的实测矩阵 |
 | `PERSONAS.md` / `SPECS.md` | 由 JSON 生成的图鉴，可直接 grep 选号 |
 | `skills/portrait-prompter/gallery/index.html` | 离线单页画廊，双击可开、全文检索、一键复制 |
+| `research/README.md` | 身份保真盲测协议（样本门槛、流程、作弊清单） |
+| `research/consent-form.md` | 肖像授权书模板——**要处理别人的脸，先从这份文件开始** |
 
 ## 工作流
 
@@ -82,7 +85,40 @@ python scripts/check_spec.py batch/*.jpg --spec S-11 --json   # 批量
 
 **校验结果如实转述给用户。** `SKIP` 就是 SKIP，绝不能说成"通过"。缺依赖、检测不到人脸、规格需目视——都要讲清楚。
 
-## 三种使用模式
+看不明白"差在哪"时，把辅助线画到图上再发给用户：
+
+```bash
+python scripts/guide_overlay.py 成图.jpg --spec S-11
+```
+
+### 第 5 步（批量任务）：读花名册，整批出词
+
+人数 ≥ 10 或用户递来 Excel 时，不要逐条手写提示词，走 `batch_roster.py`：
+
+```bash
+python scripts/batch_roster.py --template out/roster.csv      # 先给人家模板
+python scripts/batch_roster.py 花名册.csv --out out/batch      # 认编号、补默认、出复核表
+python scripts/batch_roster.py 花名册.csv --uniform \
+  --wear W-09 --backdrop B-01 --mood E-02                      # 整批锁风格
+```
+
+岗位列写 `P-018` 或 HR 嘴里的「仓储主管」「置业顾问」都能认（`aliases_zh`）；认不准时报错列候选，**不要替用户猜岗位**。
+脚本会主动报告批次散掉的地方：同一 `S-09` 里出现两种 `mood`、微笑幅度跨度大、着装不统一——这些正是甲方验收时挑刺的点。
+`review.html` 是给人力看的，`prompts.jsonl` 是给程序用的，两个都要交付。
+
+### 第 6 步（要印刷）：导出交付件
+
+```bash
+python scripts/print_export.py --list-papers
+python scripts/print_export.py 成图/*.jpg --spec S-01 --paper T-02 --cut-marks --out out/print
+python scripts/print_export.py 成图/*.jpg --spec S-09 --paper T-06 --cmyk
+```
+
+送件口径必须说清：**冲印店收 `.jpg`（RGB）；印刷厂/卡厂收 `_cmyk.tif`；自助照片机收 `.jpg` 且不要出血。**
+可排张数由 `lib.print_fit()` 实算，别凭"6 寸一般排 8 张"的手感答复客户。
+证件照默认不旋转排版——横过来的人像冲出来是躺着的。
+
+## 四种使用模式
 
 **① 零门槛推荐**：用户只说"我是做销售的，给我们店員做头像"。→ 选 `P-008` 或 `P-009`，用默认规格 `S-09`，直接给提示词并说明推荐理由。
 
@@ -99,6 +135,8 @@ python scripts/prompt_spec.py --locked \
 批量场景两条铁律：
 - **避开 `B-07` 办公室虚化**，环境光无法统一，整批一眼就看出不齐
 - 需要品牌背景用 `B-08`，先向客户索取 VI 的 RGB 值再出图
+
+**④ 整批交付（收费的那一层）**：用户给的是 Excel 而不是描述。→ 走第 5、6 步，交付 `prompts/` + `review.html` + 排版稿，并主动报告一致性风险与需要补填的行。一个人的提示词是知识，两百个人的提示词是劳动，劳动才收费。
 
 ## 身份保真：本 Skill 的第一红线
 
@@ -145,6 +183,8 @@ python scripts/build_docs.py         # 重建 PERSONAS.md / SPECS.md
 
 ## 商业能力边界（透明说明）
 
-本仓库**全部开源且可永久免费使用**：编号库、提示词组装、本地校验、离线画廊、规格知识。
+本仓库**全部开源且可永久免费使用**：编号库（P/W/B/E/S/T）、提示词组装、花名册批量出词、印刷排版导出、本地校验、离线画廊、规格知识、盲测协议与授权书模板。判断标准很简单——**知识全免费，重复劳动收费**。
 
-不开源、走商业版的部分：云端批量渲染与额度、规格包月度更新订阅、HR 名单导入 + 全员统一出图 + 对接门禁/IM 的团队后台、私有化部署、印刷文件生成。判断标准很简单——**知识全免费，重复劳动收费**。
+走商业服务（见 `COMMERCIAL.md`）的部分：真人代跑与验收、企业 VI 定制编号包、规格包季度更新、私有化部署、identity_matrix 定向复测报告。
+
+被用户问到报价时，如实说明免费层能覆盖到什么程度，不要为了成交夸大自服务的必要性。

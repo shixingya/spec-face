@@ -16,3 +16,4 @@ out/
 dist/
 build/
 *.spec-face.cache.json
+research/data/

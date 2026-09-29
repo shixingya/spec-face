@@ -168,6 +168,40 @@ def build_specs():
              "**本项目不谎报结果**——这也是商业版和免费模板最本质的区别。")
         w(f)
 
+        w(f, "## 打印载体（T）与实算可排张数")
+        w(f)
+        w(f, "> 由 `scripts/build_docs.py` 用与 `print_export.py` 相同的排版函数算出，"
+             "不是「6 寸一般排 8 张」这类经验数字。改留白或间距后请重算。")
+        w(f)
+        w(f, "| 编号 | 载体 | 尺寸 | @300dpi | 排版 | 出血/间距/留白 | 常用规格实算 |")
+        w(f, "| :-- | :-- | :-- | :-- | :-- | :-- | :-- |")
+        specs = lib.index("specs")
+        for t in lib.load("papers"):
+            tw, th = t["size_mm"]
+            px = f"{lib.mm_to_px(tw, t['dpi_default'])}×{lib.mm_to_px(th, t['dpi_default'])}px"
+            fits = []
+            for sid in t["common_specs"]:
+                s = specs.get(sid)
+                if not s:
+                    continue
+                count = lib.print_fit(t, s)
+                if count is None:
+                    continue
+                fits.append(f"{sid} {s['name_zh']} {count} 张/版" if count else f"{sid} 排不下")
+            layout = "整版单张" if t["layout"] == "single" else "多联"
+            w(f, f"| **{t['id']}** | {t['name_zh']} | {tw}×{th}mm | {px} | {layout} "
+                 f"| {t['bleed_mm_default']}/{t['gap_mm_default']}/{t['margin_mm_default']}mm "
+                 f"| {join(fits)} |")
+        w(f)
+        w(f, "```bash")
+        w(f, "python scripts/print_export.py --list-papers")
+        w(f, "python scripts/print_export.py 成图/*.jpg --spec S-01 --paper T-02 --cut-marks --out out/print")
+        w(f, "python scripts/print_export.py 成图/*.jpg --spec S-09 --paper T-06 --cmyk")
+        w(f, "```")
+        w(f)
+        w(f, "送件口径：**冲印店收 `.jpg`（RGB），印刷厂/卡厂收 `_cmyk.tif`，自助照片机收 `.jpg` 且不要出血。**")
+        w(f)
+
 
 if __name__ == "__main__":
     lib.force_utf8()

@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.2.0",
   "updated": "2026-09-29",
   "status": "untested-scaffold",
   "purpose": "记录各生图模型在「保留本人五官身份」这一硬指标上的实测表现。工牌头像与普通写真最大的差别是：像不像本人是唯一的通过条件，好看是次要条件。这份矩阵是全项目唯一需要持续真人实测才能维护的资产，也是本项目的主要壁垒。",
@@ -24,12 +24,39 @@
     "batch_consistency": {
       "label_zh": "批次一致性",
       "scale": "1-5",
-      "definition": "同一组提示词连跑 10 次，光型、背景、构图与表情的离散程度。批量工牌的生死指标"
+      "definition": "同一位志愿者、同一组锁定提示词连跑 5 次以上，光型/背景/构图/表情的离散程度。5=几乎可互换，2=明显像不同摄影棚拍的。批量工牌的生死指标"
     },
     "failure_modes": {
       "label_zh": "主要失败模式",
       "scale": "list",
-      "examples": ["耳部畸变", "牙齿异常", "瞳孔不同轴", "发丝与背景粘连", "肤色整体偏红", "左右脸不对称放大"]
+      "examples": [
+        "耳部畸变",
+        "牙齿异常",
+        "瞳孔不同轴",
+        "发丝与背景粘连",
+        "肤色整体偏红",
+        "左右脸不对称放大"
+      ]
+    },
+    "blind_same_person_accuracy": {
+      "label_zh": "盲测同认率",
+      "scale": "0-1",
+      "definition": "3 名未参与生成的评审在混排图里判断「成图与原图是否同一人」的正确率。这是矩阵里最难造假的一项"
+    },
+    "embedding_cosine_p10": {
+      "label_zh": "人脸向量相似度下限",
+      "scale": "0-1",
+      "definition": "均值好看没用，工牌场景看的是最差的那 10% 像不像本人"
+    },
+    "sample_size": {
+      "label_zh": "样本量",
+      "scale": "object",
+      "definition": "subjects / runs_per_subject / judges 三项，低于 protocol 门槛的分数不得标 tested=true"
+    },
+    "evidence": {
+      "label_zh": "证据",
+      "scale": "string",
+      "definition": "可复核的原始材料位置：PR / issue / 素材目录。没有证据的分数不进公开矩阵"
     }
   },
   "protocol": {
@@ -49,10 +76,21 @@
       "tested": false,
       "tested_with_version": null,
       "tested_at": null,
+      "evidence": null,
       "identity_fidelity": null,
+      "blind_same_person_accuracy": null,
+      "embedding_cosine_mean": null,
+      "embedding_cosine_p10": null,
       "spec_compliance": null,
+      "spec_pass_rate": null,
       "beauty_drift": null,
       "batch_consistency": null,
+      "sample_size": {
+        "subjects": null,
+        "runs_per_subject": null,
+        "judges": null
+      },
+      "failure_modes": [],
       "identity_strategy": "参考图垫图",
       "notes": "待实测"
     },
@@ -62,10 +100,21 @@
       "tested": false,
       "tested_with_version": null,
       "tested_at": null,
+      "evidence": null,
       "identity_fidelity": null,
+      "blind_same_person_accuracy": null,
+      "embedding_cosine_mean": null,
+      "embedding_cosine_p10": null,
       "spec_compliance": null,
+      "spec_pass_rate": null,
       "beauty_drift": null,
       "batch_consistency": null,
+      "sample_size": {
+        "subjects": null,
+        "runs_per_subject": null,
+        "judges": null
+      },
+      "failure_modes": [],
       "identity_strategy": "原图直入编辑模式",
       "notes": "编辑式模型通常身份保持更强，但对规格约束的服从度需单独测"
     },
@@ -75,10 +124,21 @@
       "tested": false,
       "tested_with_version": null,
       "tested_at": null,
+      "evidence": null,
       "identity_fidelity": null,
+      "blind_same_person_accuracy": null,
+      "embedding_cosine_mean": null,
+      "embedding_cosine_p10": null,
       "spec_compliance": null,
+      "spec_pass_rate": null,
       "beauty_drift": null,
       "batch_consistency": null,
+      "sample_size": {
+        "subjects": null,
+        "runs_per_subject": null,
+        "judges": null
+      },
+      "failure_modes": [],
       "identity_strategy": "参考图垫图",
       "notes": "待实测"
     },
@@ -88,10 +148,21 @@
       "tested": false,
       "tested_with_version": null,
       "tested_at": null,
+      "evidence": null,
       "identity_fidelity": null,
+      "blind_same_person_accuracy": null,
+      "embedding_cosine_mean": null,
+      "embedding_cosine_p10": null,
       "spec_compliance": null,
+      "spec_pass_rate": null,
       "beauty_drift": null,
       "batch_consistency": null,
+      "sample_size": {
+        "subjects": null,
+        "runs_per_subject": null,
+        "judges": null
+      },
+      "failure_modes": [],
       "identity_strategy": "参考图垫图",
       "notes": "国内工牌场景常用，需单独验证磨皮强度"
     },
@@ -101,10 +172,21 @@
       "tested": false,
       "tested_with_version": null,
       "tested_at": null,
+      "evidence": null,
       "identity_fidelity": null,
+      "blind_same_person_accuracy": null,
+      "embedding_cosine_mean": null,
+      "embedding_cosine_p10": null,
       "spec_compliance": null,
+      "spec_pass_rate": null,
       "beauty_drift": null,
       "batch_consistency": null,
+      "sample_size": {
+        "subjects": null,
+        "runs_per_subject": null,
+        "judges": null
+      },
+      "failure_modes": [],
       "identity_strategy": "参考图垫图",
       "notes": "待实测"
     },
@@ -114,10 +196,21 @@
       "tested": false,
       "tested_with_version": null,
       "tested_at": null,
+      "evidence": null,
       "identity_fidelity": null,
+      "blind_same_person_accuracy": null,
+      "embedding_cosine_mean": null,
+      "embedding_cosine_p10": null,
       "spec_compliance": null,
+      "spec_pass_rate": null,
       "beauty_drift": null,
       "batch_consistency": null,
+      "sample_size": {
+        "subjects": null,
+        "runs_per_subject": null,
+        "judges": null
+      },
+      "failure_modes": [],
       "identity_strategy": "需要 Identity 插件",
       "notes": "原生模型身份保持弱，必须搭配 PuLID / InstantID 类方案一并测评"
     },
@@ -127,10 +220,21 @@
       "tested": false,
       "tested_with_version": null,
       "tested_at": null,
+      "evidence": null,
       "identity_fidelity": null,
+      "blind_same_person_accuracy": null,
+      "embedding_cosine_mean": null,
+      "embedding_cosine_p10": null,
       "spec_compliance": null,
+      "spec_pass_rate": null,
       "beauty_drift": null,
       "batch_consistency": null,
+      "sample_size": {
+        "subjects": null,
+        "runs_per_subject": null,
+        "judges": null
+      },
+      "failure_modes": [],
       "identity_strategy": "本地身份注入，人脸数据不出本机",
       "notes": "唯一可完全本地化的路线，隐私敏感客户的默认选择"
     },
@@ -140,13 +244,25 @@
       "tested": false,
       "tested_with_version": null,
       "tested_at": null,
+      "evidence": null,
       "identity_fidelity": null,
+      "blind_same_person_accuracy": null,
+      "embedding_cosine_mean": null,
+      "embedding_cosine_p10": null,
       "spec_compliance": null,
+      "spec_pass_rate": null,
       "beauty_drift": null,
       "batch_consistency": null,
+      "sample_size": {
+        "subjects": null,
+        "runs_per_subject": null,
+        "judges": null
+      },
+      "failure_modes": [],
       "identity_strategy": "不推荐用于工牌",
       "notes": "美学强但身份保真与规格服从通常不达标，测完可直接在文档里劝退"
     }
   ],
-  "contribution": "欢迎提交实测数据。PR 需附：测试模型版本号、参评人数、盲测准确率、embedding 相似度均值与 P10、check_spec.py 通过率截图。数据必须可复现，否则不予合并。"
+  "contribution": "欢迎提交实测数据。PR 需附：测试模型版本号、参评人数、盲测准确率、embedding 相似度均值与 P10、check_spec.py 通过率截图。数据必须可复现，否则不予合并。",
+  "data_entry": "用 scripts/score_matrix.py 从 research/score-sheet-template.csv 聚合写入，不要手改分数。"
 }

@@ -459,6 +459,11 @@
         "head_ratio",
         "eye_line"
       ],
+      "batch_uniform": [
+        "mood",
+        "wear",
+        "backdrop"
+      ],
       "status": "stable",
       "notes_zh": "印刷需转 CMYK 并加 3mm 出血；RGB 直印会出现明显偏色，这是本规格最常见的返工原因。",
       "bg_name_en": "white or corporate VI color (switch to B-08)",
@@ -540,6 +545,10 @@
         "max_kb",
         "format",
         "safe_circle"
+      ],
+      "batch_uniform": [
+        "mood",
+        "backdrop"
       ],
       "status": "stable",
       "notes_zh": "多数 IM 会圆形裁切，关键内容必须落在中心 70% 安全区内，否则耳朵和肩线会被切掉。",

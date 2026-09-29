@@ -7,360 +7,906 @@
       "id": "P-001",
       "name_zh": "后端工程师",
       "name_en": "Backend Engineer",
+      "aliases_zh": [
+        "后端开发",
+        "服务端开发",
+        "软件工程师",
+        "研发工程师",
+        "程序员",
+        "IT技术支持",
+        "Java工程师",
+        "Go工程师"
+      ],
       "industry": "技术",
       "impression_zh": "沉稳、可靠、不张扬",
       "impression_en": "Steady, dependable, understated",
       "gaze": "平视镜头，目光聚焦不游移，带一点想事情的延迟感",
       "posture": "肩线正对镜头，下巴微收 3 度，双肩放松下沉",
-      "keywords_zh": ["深色圆领或立领", "无 logo", "哑光质感", "不刻意微笑"],
-      "keywords_en": ["dark crew or mandarin collar", "no logo", "matte texture", "no forced smile"],
+      "keywords_zh": [
+        "深色圆领或立领",
+        "无 logo",
+        "哑光质感",
+        "不刻意微笑"
+      ],
+      "keywords_en": [
+        "dark crew or mandarin collar",
+        "no logo",
+        "matte texture",
+        "no forced smile"
+      ],
       "prompt_zh": "低调的技术气质：深色简约上衣，无任何标识，面部不加滤镜修饰，表情平静而专注，传递可信赖的工程感",
       "prompt_en": "Understated engineering presence: dark minimal top without any logo, unretouched skin, calm focused expression, conveying dependable technical credibility",
-      "wears": ["W-01", "W-02", "W-06"],
-      "backdrops": ["B-01", "B-03"],
-      "moods": ["E-01", "E-05"],
+      "wears": [
+        "W-01",
+        "W-02",
+        "W-06"
+      ],
+      "backdrops": [
+        "B-01",
+        "B-03"
+      ],
+      "moods": [
+        "E-01",
+        "E-05"
+      ],
       "pitfalls": "过度磨皮和美白会直接削弱可信度；西装领带会让人误读为销售岗"
     },
     {
       "id": "P-002",
       "name_zh": "产品经理",
       "name_en": "Product Manager",
+      "aliases_zh": [
+        "产品",
+        "PM",
+        "产品专员",
+        "需求分析师",
+        "产品运营"
+      ],
       "industry": "技术",
       "impression_zh": "清晰、有主见、好沟通",
       "impression_en": "Clear, opinionated, approachable",
       "gaze": "直视镜头，眼神明亮，眉尾略微上扬表示兴趣",
       "posture": "上身略前倾 5 度，肩线打开",
-      "keywords_zh": ["浅色衬衫或针织", "简洁", "轻微笑意露齿", "明亮"],
-      "keywords_en": ["light shirt or knit", "clean", "slight open smile", "bright"],
+      "keywords_zh": [
+        "浅色衬衫或针织",
+        "简洁",
+        "轻微笑意露齿",
+        "明亮"
+      ],
+      "keywords_en": [
+        "light shirt or knit",
+        "clean",
+        "slight open smile",
+        "bright"
+      ],
       "prompt_zh": "清爽的协作者气质：浅色简洁上衣，明亮面部光，自然露齿轻笑，眼神有交流感，像一个随时能把你问题接住的人",
       "prompt_en": "Crisp collaborator presence: light clean top, bright facial lighting, natural closed-lip-to-slight smile, engaging eye contact that reads as someone ready to own your problem",
-      "wears": ["W-02", "W-03"],
-      "backdrops": ["B-02", "B-03"],
-      "moods": ["E-02", "E-03"],
+      "wears": [
+        "W-02",
+        "W-03"
+      ],
+      "backdrops": [
+        "B-02",
+        "B-03"
+      ],
+      "moods": [
+        "E-02",
+        "E-03"
+      ],
       "pitfalls": "笑过头会变成客服；背景过暗会显得疲惫"
     },
     {
       "id": "P-003",
       "name_zh": "金融分析师",
       "name_en": "Financial Analyst",
+      "aliases_zh": [
+        "分析师",
+        "投资经理",
+        "风控",
+        "信贷",
+        "证券",
+        "基金",
+        "银行柜员",
+        "银行客户经理"
+      ],
       "industry": "金融",
       "impression_zh": "严谨、克制、有分寸",
       "impression_en": "Rigorous, restrained, measured",
       "gaze": "平视，目光稳定不眨，嘴角完全闭合",
       "posture": "肩线水平端正，颈部拉长，头不偏",
-      "keywords_zh": ["深色西装", "素色领带或高领", "冷调", "零装饰"],
-      "keywords_en": ["dark suit", "plain tie or turtleneck", "cool tone", "zero accessories"],
+      "keywords_zh": [
+        "深色西装",
+        "素色领带或高领",
+        "冷调",
+        "零装饰"
+      ],
+      "keywords_en": [
+        "dark suit",
+        "plain tie or turtleneck",
+        "cool tone",
+        "zero accessories"
+      ],
       "prompt_zh": "克制的专业感：深色合体西装与素色内搭，冷白调光，面部线条干净利落，无首饰无装饰，表情中性偏严谨",
       "prompt_en": "Restrained professionalism: well-fitted dark suit with plain inner layer, cool white lighting, clean facial lines, no jewelry or accessories, neutral-to-serious expression",
-      "wears": ["W-04", "W-07"],
-      "backdrops": ["B-01", "B-04"],
-      "moods": ["E-01", "E-04"],
+      "wears": [
+        "W-04",
+        "W-07"
+      ],
+      "backdrops": [
+        "B-01",
+        "B-04"
+      ],
+      "moods": [
+        "E-01",
+        "E-04"
+      ],
       "pitfalls": "背景出现城市天际线或书架会显得刻意；暖光会削弱严谨感"
     },
     {
       "id": "P-004",
       "name_zh": "律师",
       "name_en": "Attorney",
+      "aliases_zh": [
+        "法务",
+        "法律顾问",
+        "合规专员",
+        "诉讼律师",
+        "律师助理"
+      ],
       "industry": "法务",
       "impression_zh": "镇定、有权威、可托付",
       "impression_en": "Composed, authoritative, trustworthy",
       "gaze": "略低于眼位的机位，目光平直不逼迫",
       "posture": "端正坐姿感，双肩下沉，头部保持水平",
-      "keywords_zh": ["深色正装", "挺括领口", "适度对比度", "不笑"],
-      "keywords_en": ["dark formal wear", "crisp collar", "moderate contrast", "no smile"],
+      "keywords_zh": [
+        "深色正装",
+        "挺括领口",
+        "适度对比度",
+        "不笑"
+      ],
+      "keywords_en": [
+        "dark formal wear",
+        "crisp collar",
+        "moderate contrast",
+        "no smile"
+      ],
       "prompt_zh": "权威而不压迫：挺括深色正装与清晰领口，中等对比度的稳重型打光，表情沉稳、嘴角闭合，传递可托付的判断力",
       "prompt_en": "Authority without intimidation: crisp dark formal wear with a clean collar line, moderate-contrast steady lighting, composed closed-mouth expression signaling sound judgment",
-      "wears": ["W-04", "W-07"],
-      "backdrops": ["B-04", "B-01"],
-      "moods": ["E-04", "E-01"],
+      "wears": [
+        "W-04",
+        "W-07"
+      ],
+      "backdrops": [
+        "B-04",
+        "B-01"
+      ],
+      "moods": [
+        "E-04",
+        "E-01"
+      ],
       "pitfalls": "机位过高会显得弱势；背景纹理过重抢注意力"
     },
     {
       "id": "P-005",
       "name_zh": "临床医生",
       "name_en": "Physician",
+      "aliases_zh": [
+        "医生",
+        "医师",
+        "主治医师",
+        "内科",
+        "外科",
+        "门诊医生",
+        "科室主任"
+      ],
       "industry": "医疗",
       "impression_zh": "干净、镇定、有掌控力",
       "impression_en": "Clean, calm, in control",
       "gaze": "正视镜头，目光温和但不停留游移",
       "posture": "肩线正对，颈部露出，白大褂领口平整",
-      "keywords_zh": ["白大褂", "内搭浅色", "头发整齐", "无配饰"],
-      "keywords_en": ["white coat", "light inner layer", "neat hair", "no accessories"],
+      "keywords_zh": [
+        "白大褂",
+        "内搭浅色",
+        "头发整齐",
+        "无配饰"
+      ],
+      "keywords_en": [
+        "white coat",
+        "light inner layer",
+        "neat hair",
+        "no accessories"
+      ],
       "prompt_zh": "洁净的临床可信度：平整白大褂配浅色内搭，高调明亮布光，头发与领口整洁，表情温和镇定，无首饰无杂物",
       "prompt_en": "Clinical trust through cleanliness: crisp white coat over a light inner layer, high-key bright lighting, neat hair and collar, calm warm expression, no jewelry or clutter",
-      "wears": ["W-08", "W-03"],
-      "backdrops": ["B-01", "B-05"],
-      "moods": ["E-01", "E-03"],
+      "wears": [
+        "W-08",
+        "W-03"
+      ],
+      "backdrops": [
+        "B-01",
+        "B-05"
+      ],
+      "moods": [
+        "E-01",
+        "E-03"
+      ],
       "pitfalls": "背景出现听诊器特写或药品会像广告图；阴影过重显得病态"
     },
     {
       "id": "P-006",
       "name_zh": "护士",
       "name_en": "Nurse",
+      "aliases_zh": [
+        "护理",
+        "护士长",
+        "门诊护士",
+        "病房护士",
+        "医助"
+      ],
       "industry": "医疗",
       "impression_zh": "亲和、耐心、让人安心",
       "impression_en": "Warm, patient, reassuring",
       "gaze": "眼神柔和，眼角自然放松",
       "posture": "肩线略向镜头方向打开，头可微侧 5 度",
-      "keywords_zh": ["护士服或浅色制服", "头发束起", "柔光", "自然微笑"],
-      "keywords_en": ["nurse uniform or light scrubs", "hair tied back", "soft light", "natural smile"],
+      "keywords_zh": [
+        "护士服或浅色制服",
+        "头发束起",
+        "柔光",
+        "自然微笑"
+      ],
+      "keywords_en": [
+        "nurse uniform or light scrubs",
+        "hair tied back",
+        "soft light",
+        "natural smile"
+      ],
       "prompt_zh": "安心的照护感：整洁浅色制服，头发放顺束起，柔和散射光，自然真诚的微笑，眼周放松，传递耐心与可靠",
       "prompt_en": "Reassuring care: neat light uniform, hair softly tied back, diffused gentle lighting, genuine natural smile with relaxed eye area, conveying patience and reliability",
-      "wears": ["W-08", "W-03"],
-      "backdrops": ["B-05", "B-02"],
-      "moods": ["E-02", "E-03"],
+      "wears": [
+        "W-08",
+        "W-03"
+      ],
+      "backdrops": [
+        "B-05",
+        "B-02"
+      ],
+      "moods": [
+        "E-02",
+        "E-03"
+      ],
       "pitfalls": "笑容僵硬会立刻掉信任；浓妆与制服气质冲突"
     },
     {
       "id": "P-007",
       "name_zh": "教师",
       "name_en": "Teacher",
+      "aliases_zh": [
+        "老师",
+        "讲师",
+        "培训师",
+        "班主任",
+        "教务",
+        "辅导员"
+      ],
       "industry": "教育",
       "impression_zh": "温和、有条理、能压住场",
       "impression_en": "Warm, orderly, quietly commanding",
       "gaze": "正视镜头，目光平稳带一点审视的善意",
       "posture": "肩线水平端正，下颌略收",
-      "keywords_zh": ["衬衫或针织开衫", "素雅", "中等明度", "轻笑或不笑"],
-      "keywords_en": ["shirt or cardigan", "muted", "medium brightness", "light smile or neutral"],
+      "keywords_zh": [
+        "衬衫或针织开衫",
+        "素雅",
+        "中等明度",
+        "轻笑或不笑"
+      ],
+      "keywords_en": [
+        "shirt or cardigan",
+        "muted",
+        "medium brightness",
+        "light smile or neutral"
+      ],
       "prompt_zh": "有秩序感的亲和力：素雅衬衫或开衫，中等明度均匀布光，表情温和中带一点严肃，像能同时管好四十个人的神态",
       "prompt_en": "Orderly warmth: muted shirt or cardigan, even medium-brightness lighting, an expression gently warm yet slightly serious, the look that holds a room of forty",
-      "wears": ["W-03", "W-05"],
-      "backdrops": ["B-02", "B-03"],
-      "moods": ["E-03", "E-01"],
+      "wears": [
+        "W-03",
+        "W-05"
+      ],
+      "backdrops": [
+        "B-02",
+        "B-03"
+      ],
+      "moods": [
+        "E-03",
+        "E-01"
+      ],
       "pitfalls": "背景书架虚化过度像咖啡厅；过于时髦的穿搭削弱权威"
     },
     {
       "id": "P-008",
       "name_zh": "销售顾问",
       "name_en": "Sales Consultant",
+      "aliases_zh": [
+        "业务员",
+        "销售专员",
+        "客户经理",
+        "大客户销售",
+        "商务"
+      ],
       "industry": "销售",
       "impression_zh": "有精神、可信、主动",
       "impression_en": "Energized, credible, proactive",
       "gaze": "直视镜头，眉毛自然舒展，眼神先一步打招呼",
       "posture": "上身略前倾，肩打开，头保持水平",
-      "keywords_zh": ["合体衬衫", "整洁", "明亮", "露齿轻笑"],
-      "keywords_en": ["fitted shirt", "groomed", "bright", "open smile"],
+      "keywords_zh": [
+        "合体衬衫",
+        "整洁",
+        "明亮",
+        "露齿轻笑"
+      ],
+      "keywords_en": [
+        "fitted shirt",
+        "groomed",
+        "bright",
+        "open smile"
+      ],
       "prompt_zh": "主动的可信感：合体衬衫与整洁仪容，明亮通透布光，露齿轻笑、眉宇舒展，神态像已经准备好回应你的需求",
       "prompt_en": "Proactive credibility: fitted shirt with neat grooming, bright transparent lighting, open slight smile with relaxed brows, radiating readiness to respond",
-      "wears": ["W-03", "W-04"],
-      "backdrops": ["B-02", "B-03"],
-      "moods": ["E-02", "E-06"],
+      "wears": [
+        "W-03",
+        "W-04"
+      ],
+      "backdrops": [
+        "B-02",
+        "B-03"
+      ],
+      "moods": [
+        "E-02",
+        "E-06"
+      ],
       "pitfalls": "笑过度和露齿过多会显轻浮；深色背景削弱主动性印象"
     },
     {
       "id": "P-009",
       "name_zh": "门店店长",
       "name_en": "Store Manager",
+      "aliases_zh": [
+        "店长",
+        "值班经理",
+        "门店经理",
+        "站长",
+        "门店主管",
+        "区域督导"
+      ],
       "industry": "零售",
       "impression_zh": "实干、亲切、能解决问题",
       "impression_en": "Practical, friendly, solution-minded",
       "gaze": "平视镜头，目光直接不绕",
       "posture": "肩线正对，姿态放松但不塌",
-      "keywords_zh": ["工装或 Polo", "干净", "自然光感", "轻微笑"],
-      "keywords_en": ["work shirt or polo", "clean", "natural light feel", "light smile"],
+      "keywords_zh": [
+        "工装或 Polo",
+        "干净",
+        "自然光感",
+        "轻微笑"
+      ],
+      "keywords_en": [
+        "work shirt or polo",
+        "clean",
+        "natural light feel",
+        "light smile"
+      ],
       "prompt_zh": "落地能干的气质：简洁工装或 Polo 衫，自然光感不修饰，表情亲切直接、带一丝笑意，像在高峰期照样稳住场子的人",
       "prompt_en": "Grounded operator vibe: simple work shirt or polo, unpolished natural light, friendly direct expression with a trace of a smile — someone who holds the floor through peak hours",
-      "wears": ["W-06", "W-09"],
-      "backdrops": ["B-01", "B-02"],
-      "moods": ["E-02", "E-06"],
+      "wears": [
+        "W-06",
+        "W-09"
+      ],
+      "backdrops": [
+        "B-01",
+        "B-02"
+      ],
+      "moods": [
+        "E-02",
+        "E-06"
+      ],
       "pitfalls": "正装感过重反而不贴岗；背景出现货架易杂乱"
     },
     {
       "id": "P-010",
       "name_zh": "物流调度",
       "name_en": "Logistics Coordinator",
+      "aliases_zh": [
+        "调度员",
+        "司机",
+        "快递员",
+        "仓管员",
+        "物流专员",
+        "配送站长"
+      ],
       "industry": "供应链",
       "impression_zh": "利落、抗压、靠得住",
       "impression_en": "Sharp, resilient, reliable",
       "gaze": "正视镜头，目光快而准",
       "posture": "肩线水平，头部端正不侧",
-      "keywords_zh": ["深色工装", "简洁", "对比度略高", "不笑"],
-      "keywords_en": ["dark workwear", "spare", "slightly higher contrast", "no smile"],
+      "keywords_zh": [
+        "深色工装",
+        "简洁",
+        "对比度略高",
+        "不笑"
+      ],
+      "keywords_en": [
+        "dark workwear",
+        "spare",
+        "slightly higher contrast",
+        "no smile"
+      ],
       "prompt_zh": "高压环境的利落感：深色简洁工装，稍高对比度的直白布光，表情中性而警觉，传递随时能拍板调度的稳定",
       "prompt_en": "High-pressure crispness: dark spare workwear, direct lighting with slightly raised contrast, neutral alert expression that reads as ready to make the call",
-      "wears": ["W-09", "W-01"],
-      "backdrops": ["B-01", "B-04"],
-      "moods": ["E-01", "E-05"],
+      "wears": [
+        "W-09",
+        "W-01"
+      ],
+      "backdrops": [
+        "B-01",
+        "B-04"
+      ],
+      "moods": [
+        "E-01",
+        "E-05"
+      ],
       "pitfalls": "柔光会让人怀疑执行力；背景虚化过强像棚拍广告"
     },
     {
       "id": "P-011",
       "name_zh": "物业客服",
       "name_en": "Property Service",
+      "aliases_zh": [
+        "物业",
+        "前台",
+        "客服专员",
+        "楼栋管家",
+        "收费员",
+        "保安",
+        "秩序维护员"
+      ],
       "industry": "物业服务",
       "impression_zh": "耐心、好说话、有边界",
       "impression_en": "Patient, approachable, boundaried",
       "gaze": "眼神柔和正视，不刻意讨好",
       "posture": "肩线打开，头微侧不超过 5 度",
-      "keywords_zh": ["制服或衬衫", "整洁", "中明度", "礼貌性轻笑"],
-      "keywords_en": ["uniform or shirt", "neat", "medium brightness", "polite light smile"],
+      "keywords_zh": [
+        "制服或衬衫",
+        "整洁",
+        "中明度",
+        "礼貌性轻笑"
+      ],
+      "keywords_en": [
+        "uniform or shirt",
+        "neat",
+        "medium brightness",
+        "polite light smile"
+      ],
       "prompt_zh": "得体不过界的亲和：整洁制服或衬衫，均匀中明度布光，礼貌而有分寸的浅笑，眼神愿意听但不谄媚",
       "prompt_en": "Measured approachability: neat uniform or shirt, even medium-brightness lighting, a polite restrained smile, willing-to-listen eyes without flattery",
-      "wears": ["W-09", "W-03"],
-      "backdrops": ["B-02", "B-01"],
-      "moods": ["E-03", "E-02"],
+      "wears": [
+        "W-09",
+        "W-03"
+      ],
+      "backdrops": [
+        "B-02",
+        "B-01"
+      ],
+      "moods": [
+        "E-03",
+        "E-02"
+      ],
       "pitfalls": "笑得太大显得不专业；过暗背景让人误判为管理层"
     },
     {
       "id": "P-012",
       "name_zh": "房产经纪",
       "name_en": "Real Estate Agent",
+      "aliases_zh": [
+        "房产中介",
+        "置业顾问",
+        "房产销售",
+        "门店店长（地产）",
+        "租赁顾问"
+      ],
       "industry": "销售",
       "impression_zh": "干练、热络、消息灵通",
       "impression_en": "Capable, personable, well-informed",
       "gaze": "直视镜头，眼神带一点分享好消息的劲",
       "posture": "上身端直，肩打开，微前倾",
-      "keywords_zh": ["西装或衬衫", "整洁", "明亮通透", "露齿笑"],
-      "keywords_en": ["suit or shirt", "groomed", "bright clear", "open smile"],
+      "keywords_zh": [
+        "西装或衬衫",
+        "整洁",
+        "明亮通透",
+        "露齿笑"
+      ],
+      "keywords_en": [
+        "suit or shirt",
+        "groomed",
+        "bright clear",
+        "open smile"
+      ],
       "prompt_zh": "热络的干练感：合体西装或挺括衬衫，明亮通透布光，露齿微笑，眼神像带着客户没开口就知道他要什么的消息",
       "prompt_en": "Personable competence: fitted suit or crisp shirt with bright clear lighting, open smile, eyes carrying good news before you ask",
-      "wears": ["W-04", "W-03"],
-      "backdrops": ["B-02", "B-03"],
-      "moods": ["E-02", "E-06"],
+      "wears": [
+        "W-04",
+        "W-03"
+      ],
+      "backdrops": [
+        "B-02",
+        "B-03"
+      ],
+      "moods": [
+        "E-02",
+        "E-06"
+      ],
       "pitfalls": "背景放楼盘或钥匙易像素材模板；笑过头损专业"
     },
     {
       "id": "P-013",
       "name_zh": "设计师",
       "name_en": "Designer",
+      "aliases_zh": [
+        "平面设计",
+        "视觉设计",
+        "UI设计",
+        "工业设计",
+        "建筑设计",
+        "插画师"
+      ],
       "industry": "创意",
       "impression_zh": "有审美主见、松弛、不装",
       "impression_en": "Opinionated taste, relaxed, unposed",
       "gaze": "目光略微偏离镜头 10 度，或直视但放松",
       "posture": "肩线可略斜，姿态自然不做作",
-      "keywords_zh": ["纯色基础款", "无 logo", "低饱和", "表情淡"],
-      "keywords_en": ["solid basic", "no logo", "low saturation", "plain expression"],
+      "keywords_zh": [
+        "纯色基础款",
+        "无 logo",
+        "低饱和",
+        "表情淡"
+      ],
+      "keywords_en": [
+        "solid basic",
+        "no logo",
+        "low saturation",
+        "plain expression"
+      ],
       "prompt_zh": "松弛的审美感：纯色基础款、无任何标识，低饱和色调，表情淡然，姿态自然不摆拍，靠克制体现品位",
       "prompt_en": "Relaxed taste: solid basics with no logo, desaturated tones, plain expression, unstudied posture — restraint as the signal of judgment",
-      "wears": ["W-01", "W-05"],
-      "backdrops": ["B-03", "B-06"],
-      "moods": ["E-05", "E-01"],
+      "wears": [
+        "W-01",
+        "W-05"
+      ],
+      "backdrops": [
+        "B-03",
+        "B-06"
+      ],
+      "moods": [
+        "E-05",
+        "E-01"
+      ],
       "pitfalls": "背景出现设计作品或色卡像在炫；摆拍感会破坏松弛"
     },
     {
       "id": "P-014",
       "name_zh": "内容运营",
       "name_en": "Content Operations",
+      "aliases_zh": [
+        "运营",
+        "编辑",
+        "新媒体",
+        "小编",
+        "内容策划",
+        "短视频运营"
+      ],
       "industry": "创意",
       "impression_zh": "灵活、有网感、好合作",
       "impression_en": "Agile, current, easy to work with",
       "gaze": "眼神灵动，眉尾轻微上挑",
       "posture": "肩线自然，头可微侧 8 度",
-      "keywords_zh": ["轻时尚基础款", "明快配色", "自然光", "笑容真实"],
-      "keywords_en": ["casual fashion basic", "fresh color", "natural light", "real smile"],
+      "keywords_zh": [
+        "轻时尚基础款",
+        "明快配色",
+        "自然光",
+        "笑容真实"
+      ],
+      "keywords_en": [
+        "casual fashion basic",
+        "fresh color",
+        "natural light",
+        "real smile"
+      ],
       "prompt_zh": "明快的协作感：轻时尚基础款与明快配色，自然光，真实笑容与灵动眼神，神态传递反应快、跟得住热点",
       "prompt_en": "Bright collaborator energy: casual fashion basics with fresh color, natural light, genuine smile and lively eyes that signal quick, current instincts",
-      "wears": ["W-05", "W-02"],
-      "backdrops": ["B-03", "B-02"],
-      "moods": ["E-06", "E-02"],
+      "wears": [
+        "W-05",
+        "W-02"
+      ],
+      "backdrops": [
+        "B-03",
+        "B-02"
+      ],
+      "moods": [
+        "E-06",
+        "E-02"
+      ],
       "pitfalls": "过度正装显得不搭岗；色调灰暗会毁掉网感"
     },
     {
       "id": "P-015",
       "name_zh": "人力资源",
       "name_en": "HR Business Partner",
+      "aliases_zh": [
+        "HR",
+        "人事",
+        "招聘专员",
+        "行政",
+        "人事经理",
+        "行政前台"
+      ],
       "industry": "职能",
       "impression_zh": "稳、可倾诉、有原则",
       "impression_en": "Steady, confiding, principled",
       "gaze": "正视镜头，目光稳定且不带评判",
       "posture": "肩线水平端正，头保持水平",
-      "keywords_zh": ["衬衫或西装外套", "中性色", "柔亮", "礼貌浅笑"],
-      "keywords_en": ["shirt or blazer", "neutral tone", "soft bright", "polite light smile"],
+      "keywords_zh": [
+        "衬衫或西装外套",
+        "中性色",
+        "柔亮",
+        "礼貌浅笑"
+      ],
+      "keywords_en": [
+        "shirt or blazer",
+        "neutral tone",
+        "soft bright",
+        "polite light smile"
+      ],
       "prompt_zh": "有原则的亲和力：中性色衬衫或外套，柔亮均匀布光，礼貌浅笑与不带评判的注视，像能说真话的人也听得进话",
       "prompt_en": "Principled warmth: neutral shirt or blazer, soft even lighting, a polite smile and non-judgmental gaze — someone who speaks straight and listens back",
-      "wears": ["W-03", "W-07"],
-      "backdrops": ["B-02", "B-01"],
-      "moods": ["E-03", "E-04"],
+      "wears": [
+        "W-03",
+        "W-07"
+      ],
+      "backdrops": [
+        "B-02",
+        "B-01"
+      ],
+      "moods": [
+        "E-03",
+        "E-04"
+      ],
       "pitfalls": "笑得过甜削弱原则感；冷光会显得像审计岗"
     },
     {
       "id": "P-016",
       "name_zh": "财务",
       "name_en": "Finance Manager",
+      "aliases_zh": [
+        "会计",
+        "出纳",
+        "审计",
+        "税务",
+        "财务经理",
+        "结算"
+      ],
       "industry": "职能",
       "impression_zh": "细、稳、不多话",
       "impression_en": "Meticulous, steady, reserved",
       "gaze": "平视，目光安静聚焦",
       "posture": "肩线端平，身体不做倾斜",
-      "keywords_zh": ["素色衬衫", "深色外套", "低对比杂讯", "不笑"],
-      "keywords_en": ["plain shirt", "dark layer", "clean low-contrast", "no smile"],
+      "keywords_zh": [
+        "素色衬衫",
+        "深色外套",
+        "低对比杂讯",
+        "不笑"
+      ],
+      "keywords_en": [
+        "plain shirt",
+        "dark layer",
+        "clean low-contrast",
+        "no smile"
+      ],
       "prompt_zh": "安静的严谨感：素色衬衫配深色外套，干净无杂讯的布光，表情中性、嘴唇闭合，传递不差毫厘的耐心",
       "prompt_en": "Quiet rigor: plain shirt under a dark layer, clean noise-free lighting, neutral closed-mouth expression that reads as exacting patience",
-      "wears": ["W-03", "W-04"],
-      "backdrops": ["B-01", "B-04"],
-      "moods": ["E-01", "E-05"],
+      "wears": [
+        "W-03",
+        "W-04"
+      ],
+      "backdrops": [
+        "B-01",
+        "B-04"
+      ],
+      "moods": [
+        "E-01",
+        "E-05"
+      ],
       "pitfalls": "配饰与花哨领口破坏克制感；暖黄光显得随意"
     },
     {
       "id": "P-017",
       "name_zh": "技术支持",
       "name_en": "Technical Support",
+      "aliases_zh": [
+        "运维",
+        "售后工程师",
+        "客服工程师",
+        "实施顾问",
+        "技术支持工程师"
+      ],
       "industry": "技术",
       "impression_zh": "有耐心、反应快、不推诿",
       "impression_en": "Patient, responsive, accountable",
       "gaze": "直视镜头，眼神先一步回应",
       "posture": "肩线放松打开，微前倾",
-      "keywords_zh": ["工服或纯色 T", "整洁", "明亮", "轻笑"],
-      "keywords_en": ["uniform or plain tee", "neat", "bright", "light smile"],
+      "keywords_zh": [
+        "工服或纯色 T",
+        "整洁",
+        "明亮",
+        "轻笑"
+      ],
+      "keywords_en": [
+        "uniform or plain tee",
+        "neat",
+        "bright",
+        "light smile"
+      ],
       "prompt_zh": "回应感极强的气质：简洁工服或纯色上衣，明亮通透布光，轻笑且目光主动，传递不会把你的问题推回去",
       "prompt_en": "Strongly responsive presence: neat uniform or plain top, bright clear lighting, a light smile with initiating eyes that promise no runaround",
-      "wears": ["W-09", "W-01"],
-      "backdrops": ["B-02", "B-01"],
-      "moods": ["E-02", "E-06"],
+      "wears": [
+        "W-09",
+        "W-01"
+      ],
+      "backdrops": [
+        "B-02",
+        "B-01"
+      ],
+      "moods": [
+        "E-02",
+        "E-06"
+      ],
       "pitfalls": "表情过冷会让客户以为要排队；背景杂乱损可信度"
     },
     {
       "id": "P-018",
       "name_zh": "连锁门店员工",
       "name_en": "Frontline Retail Staff",
+      "aliases_zh": [
+        "店员",
+        "营业员",
+        "导购",
+        "收银员",
+        "服务员",
+        "理货员",
+        "咖啡师",
+        "烘焙师"
+      ],
       "industry": "零售",
       "impression_zh": "整齐划一、有品牌感、亲和",
       "impression_en": "Uniform, brand-aligned, friendly",
       "gaze": "标准正视镜头，目光干净统一",
       "posture": "统一规范：肩线水平正对镜头，头不侧",
-      "keywords_zh": ["品牌工服", "仪容规范", "统一底色", "标准微笑"],
-      "keywords_en": ["brand uniform", "grooming standard", "unified backdrop color", "standard smile"],
+      "keywords_zh": [
+        "品牌工服",
+        "仪容规范",
+        "统一底色",
+        "标准微笑"
+      ],
+      "keywords_en": [
+        "brand uniform",
+        "grooming standard",
+        "unified backdrop color",
+        "standard smile"
+      ],
       "prompt_zh": "品牌统一规范感：整洁品牌工服与规范仪容，标准正面姿态，统一底色与光型，微笑幅度控制在标准范围，适合批量出图",
       "prompt_en": "Brand-uniform standard: tidy branded uniform with grooming standards, squared-on posture, unified backdrop and lighting, smile held within standard range, built for batch output",
-      "wears": ["W-09", "W-06"],
-      "backdrops": ["B-01", "B-02"],
-      "moods": ["E-02", "E-03"],
+      "wears": [
+        "W-09",
+        "W-06"
+      ],
+      "backdrops": [
+        "B-01",
+        "B-02"
+      ],
+      "moods": [
+        "E-02",
+        "E-03"
+      ],
       "pitfalls": "个性化打光会破坏整批一致性；批量场景务必锁定同一背景与光型"
     },
     {
       "id": "P-019",
       "name_zh": "仓库与产线",
       "name_en": "Warehouse & Line Operator",
+      "aliases_zh": [
+        "仓库",
+        "产线",
+        "作业员",
+        "普工",
+        "质检",
+        "叉车司机",
+        "仓储主管",
+        "分拣员",
+        "生产组长"
+      ],
       "industry": "制造",
       "impression_zh": "踏实、能吃苦、守规矩",
       "impression_en": "Solid, hardworking, disciplined",
       "gaze": "正视镜头，目光朴实稳定",
       "posture": "肩线正对，姿态自然不挺胸",
-      "keywords_zh": ["工服", "安全规范", "自然光", "轻微微笑或不笑"],
-      "keywords_en": ["work uniform", "safety compliance", "natural light", "faint smile or neutral"],
+      "keywords_zh": [
+        "工服",
+        "安全规范",
+        "自然光",
+        "轻微微笑或不笑"
+      ],
+      "keywords_en": [
+        "work uniform",
+        "safety compliance",
+        "natural light",
+        "faint smile or neutral"
+      ],
       "prompt_zh": "朴实的可靠感：整洁工服与安全规范着装，自然偏硬的光，表情朴实稳定，不摆拍不修饰，传递一线实干的信任",
       "prompt_en": "Plain reliability: clean work uniform with safety compliance, natural slightly hard light, grounded steady expression, unposed and unretouched — frontline trust",
-      "wears": ["W-09", "W-10"],
-      "backdrops": ["B-01", "B-05"],
-      "moods": ["E-01", "E-05"],
+      "wears": [
+        "W-09",
+        "W-10"
+      ],
+      "backdrops": [
+        "B-01",
+        "B-05"
+      ],
+      "moods": [
+        "E-01",
+        "E-05"
+      ],
       "pitfalls": "背景出现设备易失焦杂乱；过度美颜会失去岗位真实感"
     },
     {
       "id": "P-020",
       "name_zh": "自由职业与咨询顾问",
       "name_en": "Independent Consultant",
+      "aliases_zh": [
+        "顾问",
+        "咨询师",
+        "心理咨询师",
+        "独立顾问",
+        "自由职业",
+        "合伙人"
+      ],
       "industry": "专业服务",
       "impression_zh": "专业但不冷，有个人风格",
       "impression_en": "Professional yet personal, with signature style",
       "gaze": "直视镜头，眼神有内容和故事感",
       "posture": "端正但放松，允许肩线有 5 度自然差",
-      "keywords_zh": ["质感基础款", "细节配饰克制", "层次光", "浅笑"],
-      "keywords_en": ["textured basic", "restrained accessory", "layered light", "soft smile"],
+      "keywords_zh": [
+        "质感基础款",
+        "细节配饰克制",
+        "层次光",
+        "浅笑"
+      ],
+      "keywords_en": [
+        "textured basic",
+        "restrained accessory",
+        "layered light",
+        "soft smile"
+      ],
       "prompt_zh": "有辨识度的专业：质感基础款与克制细节，带层次的主光与轮廓光，浅笑且眼神有内容，既专业又像有自己方法论的人",
       "prompt_en": "Distinctive professionalism: textured basics with restrained detail, layered key and rim lighting, a soft smile with substance behind the eyes — expert with a point of view",
-      "wears": ["W-07", "W-05"],
-      "backdrops": ["B-06", "B-03"],
-      "moods": ["E-04", "E-03"],
+      "wears": [
+        "W-07",
+        "W-05"
+      ],
+      "backdrops": [
+        "B-06",
+        "B-03"
+      ],
+      "moods": [
+        "E-04",
+        "E-03"
+      ],
       "pitfalls": "层次光过强变明星写真；配饰抢戏会削弱专业主线"
     }
   ]

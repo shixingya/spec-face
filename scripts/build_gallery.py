@@ -65,12 +65,12 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 40px;color:var(--mut);font-
 <body>
 <header>
   <h1>spec-face 编号画廊</h1>
-  <div class="sub">选个编号，出张能直接印进工卡的职业照 · 岗位 __NP__ / 着装 __NW__ / 背景光型 __NB__ / 神态 __NE__ / 合规规格 __NS__</div>
+  <div class="sub">选个编号，出张能直接印进工卡的职业照 · 岗位 __NP__ / 着装 __NW__ / 背景光型 __NB__ / 神态 __NE__ / 合规规格 __NS__ / 打印载体 __NT__</div>
   <div class="bar">
     <input id="q" placeholder="搜索编号、岗位、行业、关键词…（如 P-001 / 金融 / 白底）">
     <nav>
       <button data-t="p" class="on">岗位</button><button data-t="w">着装</button>
-      <button data-t="b">背景光型</button><button data-t="e">神态</button><button data-t="s">合规规格</button>
+      <button data-t="b">背景光型</button><button data-t="e">神态</button><button data-t="s">合规规格</button><button data-t="t">打印载体</button>
     </nav><span id="n"></span>
   </div>
 </header>
@@ -216,11 +216,41 @@ def spec_cards():
     return out
 
 
+def paper_cards():
+    out = []
+    specs = lib.index("specs")
+    for t in lib.load("papers"):
+        w, h = t["size_mm"]
+        dpi = t["dpi_default"]
+        px = f'{lib.mm_to_px(w, dpi)}×{lib.mm_to_px(h, dpi)}px @ {dpi}dpi'
+        fits = []
+        for sid in t["common_specs"]:
+            s = specs.get(sid)
+            if not s:
+                continue
+            count = lib.print_fit(t, s)
+            if count is None:
+                continue
+            fits.append(f'{sid} {s["name_zh"]}：{count} 张/版' if count else f'{sid} 排不下')
+        warn = '<div class="row warn">⚠ needs_verification：与印厂确认介质与色标后再用</div>' \
+            if t["status"] == "needs_verification" else ''
+        rows = (f'<div class="row"><b>尺寸</b> {w}×{h}mm · {esc(px)}</div>'
+                f'<div class="row"><b>排版</b> {esc(t["layout"])} · 出血 {t["bleed_mm_default"]}mm · '
+                f'间距 {t["gap_mm_default"]}mm · 留白 {t["margin_mm_default"]}mm</div>'
+                f'<div class="row"><b>实算可排</b> {esc("；".join(fits) or "见 print_export.py")}</div>'
+                f'<div class="row mut">{esc(t["notes_zh"])}</div>{warn}')
+        out.append({"search": " ".join([t["id"], t["name_zh"], t["name_en"], t["layout"],
+                                        " ".join(t["common_specs"]), t["notes_zh"]]),
+                    "html": f'<div class="id">{esc(t["id"])}</div><div class="t">{esc(t["name_zh"])}'
+                            f' <span class="en">{esc(t["name_en"])}</span></div>{rows}'})
+    return out
+
+
 def main():
     lib.force_utf8()
-    counts = {k: len(lib.load(k)) for k in ("personas", "wear", "backdrops", "moods", "specs")}
+    counts = {k: len(lib.load(k)) for k in ("personas", "wear", "backdrops", "moods", "specs", "papers")}
     data = {"p": persona_cards(), "w": wear_cards(), "b": backdrop_cards(),
-            "e": mood_cards(), "s": spec_cards()}
+            "e": mood_cards(), "s": spec_cards(), "t": paper_cards()}
     out = (PAGE
            .replace("__DATA__", json.dumps(data, ensure_ascii=False))
            .replace("__OBJ__", "{{对象描述}}")
@@ -228,7 +258,8 @@ def main():
            .replace("__NW__", str(counts["wear"]))
            .replace("__NB__", str(counts["backdrops"]))
            .replace("__NE__", str(counts["moods"]))
-           .replace("__NS__", str(counts["specs"])))
+           .replace("__NS__", str(counts["specs"]))
+           .replace("__NT__", str(counts["papers"])))
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as handle:
         handle.write(out)
