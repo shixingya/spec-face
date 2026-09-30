@@ -350,6 +350,8 @@ python scripts/build_docs.py          # 重建 PERSONAS.md / SPECS.md
 
 欢迎提 PR：新岗位、新规格、以及**任何带方法论的实测数据**。
 
+每一版改了什么、哪些能力仍标着"未实测"，都写在 [CHANGELOG.md](CHANGELOG.md) 里。
+
 ## 开源与商业的边界
 
 这个项目是要赚钱的，所以把话说在前面。完整价目与交付口径见 [COMMERCIAL.md](COMMERCIAL.md)。

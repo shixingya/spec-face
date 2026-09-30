@@ -17,6 +17,7 @@
 | `PERSONAS.md` | P/W/B/E 图鉴 | ❌ 由 `build_docs.py` 生成 |
 | `SPECS.md` | S 规格图鉴 + T 载体实算可排张数 + G 生成后端 | ❌ 由 `build_docs.py` 生成 |
 | `COMMERCIAL.md` | 价目、交付口径、需求表、拒绝清单 | ✅ 手工维护 |
+| `CHANGELOG.md` | 逐版变更与已知缺口（含哪些能力仍标 `unverified`） | ✅ 手工维护 |
 | `skills/portrait-prompter/SKILL.md` | Agent Skill 定义：工作流、五种模式、合规红线 | ✅ 手工维护 |
 | `skills/portrait-prompter/gallery/index.html` | 离线画廊单页（含打印载体与生成后端标签页） | ❌ 由 `build_gallery.py` 生成 |
 | `scripts/lib.py` | 资产加载、双语提示词组装、排版实算（`print_fit`） | ✅ |

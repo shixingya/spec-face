@@ -287,6 +287,8 @@ The validator blocks duplicate IDs, `aspect` that disagrees with `px`, a `bg_rgb
 
 PRs welcome: new personas, new specs, and **any measurement that comes with its methodology**.
 
+Full per-version history, including what is still flagged as untested, lives in [CHANGELOG.md](CHANGELOG.md).
+
 ## Open source vs commercial
 
 This project intends to make money, so let's be upfront. Full pricing and delivery terms: [COMMERCIAL.md](COMMERCIAL.md).
