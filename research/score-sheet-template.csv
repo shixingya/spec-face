@@ -1,2 +1,0 @@
-model_key,model_version,tested_at,tester,subject_id,source_photo,output_file,spec_id,identity_fidelity,beauty_drift,batch_consistency,judge_1,judge_2,judge_3,embedding_cosine,spec_check_pass,failure_mode,notes
-REPLACE-ME,填模型版本号或build号,2026-09-29,tester-A,V01,src_v01_front.jpg,out_v01_r3.jpg,S-09,4,1,4,1,1,0,0.71,1,发丝与背景粘连,示例行，删掉这一行再填你的数据
