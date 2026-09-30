@@ -32,6 +32,10 @@
 | `scripts/validate_library.py` | CLI：资产库完整性、交叉引用、虚假声明检查 | ✅ |
 | `scripts/build_gallery.py` | 构建离线画廊 | ✅ |
 | `scripts/build_docs.py` | 构建 Markdown 图鉴 | ✅ |
+| `scripts/build_site.py` | 构建 GitHub Pages 试用站：把 `references/*.json` 打包成 `docs/data/library.js`，同步画廊 | ✅ |
+| `docs/index.html` + `docs/assets/` | 在线试用台：选号出双语提示词、浏览器本地校验、生成本机出图命令 | ✅ 手工维护 |
+| `docs/data/library.js` | 网页读的数字库 | ❌ 由 `build_site.py` 生成 |
+| `docs/gallery.html` | 全量编号图鉴（站点内页） | ❌ 由 `build_gallery.py` + `build_site.py` 复制 |
 | `research/README.md` | 身份保真盲测协议：门槛、七步流程、列定义、作弊清单 | ✅ |
 | `research/consent-form.md` | 肖像授权书模板（含撤回权与删除期限） | ✅ |
 | `research/score-sheet-template.csv` | 打分表模板 | ✅ |
@@ -45,6 +49,7 @@
 python scripts/validate_library.py     # 必须先过
 python scripts/build_gallery.py
 python scripts/build_docs.py
+python scripts/build_site.py           # 改了 references/ 就要重跑，网页数字库不能和 JSON 两套口径
 ```
 
 排版可排张数在 `SPECS.md`、离线画廊、`print_export.py` 三处共用 `lib.print_fit()`，
@@ -61,3 +66,4 @@ python scripts/build_docs.py
 - `providers.json` 里 G-01~G-05 全是 `unverified`：协议形状与闸门逻辑用本机假服务端验过（上传→排队→轮询→下载→回校验全链路），但**本仓库从未在真实 GPU 上跑通过任何一条出图链路**。要转成 `verified` 必须附 `evidence`，`validate_library.py` 会拦虚假声明
 - `gen_portrait.py` 不预置 ComfyUI 工作流模板：节点名随插件版本变，硬编码必翻车，只认用户自己「Save (API Format)」导出的文件与 `{{prompt}}` 一类占位符
 - `studio.py` 只做单机单人，尚未与 `batch_roster.py` 打通（拖入花名册整列出图在路线图里）
+- `docs/` 试用站只做**出词 + 几何/色差校验**：浏览器里没有 DPI 元数据、也不做人脸检测，这两项一律标 `−`；渲染必须由本机 Python + GPU 完成，网页不代跑

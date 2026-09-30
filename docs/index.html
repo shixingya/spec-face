@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>spec-face 试用台 · 选编号，出合规工牌头像提示词</title>
+<meta name="description" content="在线组合 S/P/W/B/E 五元编号，生成中英双语工牌头像提示词与交付前自检清单，并在浏览器本地校验图片尺寸、底色与体积。不上传任何图片。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header>
+  <div class="head-inner">
+    <h1>spec-face 试用台 <span class="tag" id="v-tag">v0.0.0</span></h1>
+    <div class="sub">证件照和工牌不是"好看就行"——<b>过不了规格就是废图</b>。这里把编号、规格和校验做成可以点的东西。
+      资产共 <span id="v-count">—</span>。</div>
+    <nav class="tabs">
+      <a href="index.html">试用台</a>
+      <a href="gallery.html">全量编号图鉴</a>
+      <a href="https://github.com/shixingya/spec-face" target="_blank" rel="noopener">GitHub 仓库 ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main id="app">
+
+  <section class="step">
+    <h2><span class="num">1</span>先定合规规格 <small class="en">S</small></h2>
+    <p class="why">先问用途，再谈审美。用途决定规格，规格决定构图，构图决定提示词——顺序颠倒就会返工。</p>
+    <div class="row">
+      <div class="f wide">
+        <label for="spec">这张图用在哪里</label>
+        <select id="spec"></select>
+      </div>
+    </div>
+    <div class="facts" id="facts"></div>
+    <div class="flag" id="spec-flag" hidden>⚠ 本规格标记 <code>needs_verification</code>：正式提交前请比对受理方（使领馆、出入境、交管、平台）的最新公告，本页不构成官方口径。</div>
+  </section>
+
+  <section class="step">
+    <h2><span class="num">2</span>选岗位气质，说这个人长什么样 <small class="en">P · W · B · E</small></h2>
+    <p class="why">外貌只写客观特征：性别年龄段、脸型、发型、肤色、胖瘦。气质形容词不用你写，编号 <span id="spec-name">—</span> 和岗位库负责。</p>
+    <div class="row">
+      <div class="f">
+        <label for="persona">岗位气质 P</label>
+        <select id="persona"></select>
+      </div>
+      <div class="f">
+        <label for="subject">对象描述（中文，必填）</label>
+        <input type="text" id="subject" placeholder="30岁男性，方脸，短寸发，自然肤色，偏瘦">
+      </div>
+      <div class="f">
+        <label for="subject-en">对象描述（英文，选填）</label>
+        <input type="text" id="subject-en" placeholder="30-year-old man, square face, buzz cut">
+      </div>
+    </div>
+    <fieldset>
+      <legend>着装 / 背景光型 / 神态——不选就按岗位推荐组合自动补全</legend>
+      <div class="row">
+        <div class="f"><label for="w-wear">着装 W</label><select id="w-wear"></select></div>
+        <div class="f"><label for="w-backdrop">背景光型 B</label><select id="w-backdrop"></select></div>
+        <div class="f"><label for="w-mood">神态 E</label><select id="w-mood"></select></div>
+      </div>
+    </fieldset>
+    <p style="margin:14px 0 0"><button class="act sec" id="reset">清空重来</button></p>
+
+    <div class="out" id="prompt-out"></div>
+  </section>
+
+  <section class="step">
+    <h2><span class="num">3</span>把你手上的图拉回规格校验 <small class="en">本机计算，不上传</small></h2>
+    <p class="why">尺寸、宽高比、体积、底色取样全部在浏览器里算；<b>图片不出这台设备</b>，页面也不发任何网络请求。测不了的项一律标 −，不算通过。</p>
+    <div class="drop" id="drop">
+      把图片拖进来，或 <input type="file" id="file" accept="image/*" style="display:inline-block;width:auto;border:none;padding:0">
+      <div id="file-name" style="margin-top:6px"></div>
+    </div>
+    <div class="step" id="check-card" hidden style="margin:16px 0 0;padding:0;border:none">
+      <div class="preview">
+        <div id="check-preview"></div>
+        <div style="flex:1;min-width:260px">
+          <table>
+            <thead><tr><th></th><th>校验项</th><th>用第 1 步选定的规格实测</th></tr></thead>
+            <tbody id="check-body"></tbody>
+          </table>
+          <div class="summary" id="check-sum"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2><span class="num">4</span>要真出图：把照片交给本机的开源服务 <small class="en">G</small></h2>
+    <p class="why">网页不能替你渲染——那需要显卡和模型权重。这一步按你上面的选择生成命令，复制回本机就能跑；没有 GPU 时用 <code>G-06</code>，它只导出提示词与请求体，交付动作由你完成。</p>
+    <div class="row">
+      <div class="f wide">
+        <label for="provider">生成后端 G</label>
+        <select id="provider"></select>
+      </div>
+    </div>
+    <p class="why" id="g-note" style="margin:10px 0 0"></p>
+    <div class="blk" style="margin-top:14px">
+      <h3><span>本机命令</span><button class="copy" data-copy="cmd">复制</button></h3>
+      <pre class="cmd" id="cmd"></pre>
+    </div>
+    <b style="font-size:13px">这个后端需要什么</b>
+    <ul class="gates" id="g-need"></ul>
+    <b style="font-size:13px">三道闸门写死在代码里，不在数据里</b>
+    <ul class="gates">
+      <li>没有真实照片（<code>--photo</code>）就拒跑——凭文字生成一个不存在的人，那是写真需求。</li>
+      <li>没有写明授权（<code>--confirm-authorized</code>）就拒跑，并拒绝一切"用生成的照片去过门禁 / 活体检测 / 实名认证"的用法。</li>
+      <li>请求体里没有身份注入节点（PuLID / InstantID / IP-Adapter / ReActor）就拒跑——没有身份注入的文生图必然画出"更好看但不是本人"的人，而"像不像本人"是工牌头像唯一的通过条件。</li>
+      <li>端点默认只允许 127.0.0.1；接云端 API 等于把人脸上传给第三方，必须你自己显式加 <code>--allow-remote</code>。</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="head-inner">
+    <p><b>诚实边界：</b>本页只做编号组装与本地几何/色差校验，不宣称任何"通过率"；涉及签证、护照、驾照等官方材料，受理机构的最新公告永远优先于本库。
+      生成后端 G-01~G-05 标着 <code>unverified</code>——本仓库从未在真实 GPU 上跑通那条链路，只保证协议形状与闸门逻辑经过验证。</p>
+    <p>开源与商业的边界一句话：<b>知识全免费，重复劳动收费。</b>
+      编号库、提示词组装、批量出词、印刷排版、本地校验全部 MIT 免费；付费买的是"两百家门店、下周三之前做完"，口径见仓库里的
+      <a href="https://github.com/shixingya/spec-face/blob/main/COMMERCIAL.md" target="_blank" rel="noopener">COMMERCIAL.md</a>。</p>
+    <p>作者 <b>卜天</b> · 知乎 / CSDN / 公众号同名 · 仓库
+      <a href="https://github.com/shixingya/spec-face" target="_blank" rel="noopener">shixingya/spec-face</a></p>
+  </div>
+</footer>
+
+<script src="data/library.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
