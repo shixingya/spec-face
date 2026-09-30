@@ -10,6 +10,10 @@
 
 你不需要背"伦勃朗光""头高占画面 70%"这类术语，也不需要记住各国的细则差异。**选定规格号 + 岗位号，说一句"这个人长什么样"，就能拿到经过结构化的中英双语生图提示词，再本地跑一次校验，看这张图到底能不能用。一个人是这样，两百个人也是一条命令。**
 
+> ### 👉 不想装环境？[**在线试用台**](https://shixingya.github.io/spec-face/) 直接选编号出提示词
+>
+> 选规格 → 挑岗位 → 拖照片本地校验，全部在浏览器里跑完，**图片不上传、不经过任何服务器**。生图仍需本机 Python + GPU，网页不代跑。
+
 <div align="center">
 
 ![离线画廊](images/gallery-preview.png)
@@ -46,6 +50,7 @@ AI 写真工具满地都是，但它们大多数在解决同一件事：**把人
 | 小尺寸头像被圆形裁掉耳朵 | `guide_overlay.py` 把瞳孔线带、头部高度框、70% 圆形安全区画在图上 |
 | 手里有一张照片，想直接做成头像而不是拿提示词 | `gen_portrait.py` / `studio.py` 走本机开源服务出图，出完自动回校验 |
 | 不敢把人像传给云端 | 默认只连 127.0.0.1，改云端要你自己写 `--allow-remote` |
+| 装环境之前先想看看长什么样 | [**在线试用台**](https://shixingya.github.io/spec-face/)：浏览器里选号出词 + 拖图校验，图片不出本机 |
 
 ## 快速开始
 
@@ -118,6 +123,12 @@ images/sample-headshot.jpg
 这张示例图**故意没过校验**：尺寸是模型出的原始尺寸、底色偏灰 16 个单位。它正好演示了校验器存在的意义——"看起来挺白的"不算，量出来 239 就是 239。按 `S-01` 目标像素重出图、或走 `print_export.py` 排版导出，才是交付件。
 
 **图片全程留在本机，不上传任何地方。** 校验器只报告它能客观判定的项——判不了的就标 `SKIP`，不会假装通过。
+
+### 3. 上面这两步，浏览器里也有一份
+
+不想装 Python：**[shixingya.github.io/spec-face](https://shixingya.github.io/spec-face/)** 把「挑编号出提示词」和「拖图片本地校验」都搬到了网页里。提示词拼装是 `prompt_spec.py --json` 的逐句 JS 移植，两边输出的 SHA-256 实测一致；背景取样沿用 `check_spec.py` 的口径——顶边 + 侧边上部、逐通道中位数，不是整圈均值。
+
+浏览器给不了的两项一律标 `−` 而不是假装通过：网页里的图片没有 DPI 元数据，也不做人脸检测。拖进去的照片在你自己的浏览器里解码，页面不发任何上传请求。源码在 `docs/`，由 `python scripts/build_site.py` 从 `references/*.json` 重新生成。
 
 ## 编号体系：五层出词 + 交付与生成
 
@@ -377,6 +388,8 @@ python scripts/build_docs.py          # 重建 PERSONAS.md / SPECS.md
 - [x] 圆形安全区预览（`guide_overlay.py`，v0.2.0）
 - [x] 花名册批量出词与一致性体检（`batch_roster.py`，v0.2.0）
 - [x] 生成后端 G 层：本人照片 → 本机开源服务出图 → 自动回校验，含工作台页面（`gen_portrait.py` / `studio.py`，v0.3.0）
+- [x] 在线试用站 <https://shixingya.github.io/spec-face/>：选号出词 + 拖图校验，纯静态、图片不出浏览器（v0.4.0）
+- [ ] 试用站改为 push 到 main 后自动发布，去掉手工拷贝 `docs/` → `gh-pages` 这一步
 - [ ] **在真实 GPU 上把 G-01/G-03 跑通**，回填 `providers.json` 的 `evidence` 与 `identity_matrix` 首行数据——目前它们诚实地标着 `unverified`
 - [ ] `studio.py` 支持拖拽花名册，一整列人连着出图
 - [ ] 规格官方来源逐条比对，去掉 `needs_verification` 标记

@@ -56,7 +56,8 @@ def main():
     print(f"已生成 docs/data/library.js（{kb:.0f}KB，"
           + "  ".join(f"{k}={len(payload[k])}" for k in
                       ("personas", "wear", "backdrops", "moods", "specs", "papers", "providers")) + "）")
-    print("下一步：python -m http.server -d docs 8000 本地预览，确认无误再推 main 走 Pages")
+    print("下一步：python -m http.server -d docs 8000 本地预览；"
+          "确认后按 MANIFEST.md「试用站发布」把 docs/ 全量同步到 gh-pages 分支，Pages 读的是那个分支而不是 main")
     return 0
 
 

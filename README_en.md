@@ -10,6 +10,10 @@
 
 You don't need to memorize "Rembrandt lighting" or "head height must be 70% of frame". Pick a spec and a persona, describe the person, and you get a structured bilingual prompt — then run a local check to see whether the result actually passes. One person or two hundred: it's one command either way.
 
+> ### 👉 Don't want to install anything? [**Try it in the browser**](https://shixingya.github.io/spec-face/)
+>
+> Pick a spec, assemble the prompt, drop in a photo to check it — all client-side. **No image ever leaves your machine.** Rendering still needs local Python + a GPU; the page never renders for you.
+
 ---
 
 ## Why this exists
@@ -40,6 +44,7 @@ None of these are fixed by a prettier prompt. They are fixed by **specs, constra
 | Circular avatars clip the ears | `guide_overlay.py` draws the eye-line band, head box and 70% safe circle onto the photo |
 | I have a photo — I want the headshot, not a prompt | `gen_portrait.py` / `studio.py` render it through your local open-source service, then re-check it |
 | I won't upload faces to a cloud API | Loopback by default; a non-127.0.0.1 endpoint is refused until you pass `--allow-remote` yourself |
+| I want to see it work before I install Python | [**The hosted trial**](https://shixingya.github.io/spec-face/): prompt assembly and photo checking, both in the browser, both offline from the server |
 
 ## Quick start
 
@@ -81,6 +86,12 @@ images/sample-headshot.jpg
 That sample **fails on purpose**: it's the model's raw output size and its backdrop is 16 units off pure white. "Looks white" doesn't count — 239 is 239. Re-render at the spec's target pixels, or run it through `print_export.py`, before you deliver anything.
 
 Anything the checker cannot measure is reported as `SKIP`, never as a pass. It will not lie to you. **Every check runs on your machine — no image is uploaded anywhere.**
+
+### Both steps above also run in a browser
+
+**[shixingya.github.io/spec-face](https://shixingya.github.io/spec-face/)** is a port of the two steps above — prompt assembly and local photo checking — to a static page, for anyone who doesn't want to install Python first. The prompt builder is a line-by-line JS port of `prompt_spec.py --json`; the two implementations were compared and their outputs hash to the same SHA-256. The background sampler follows `check_spec.py` exactly: top edge plus upper side columns, per-channel median, not an average of the whole border.
+
+Two things a browser cannot measure are shown as `−` rather than a green tick: a dropped image carries no DPI metadata, and the page runs no face detection. Real DPI and head-ratio verification still belong to `check_spec.py`. Your image is decoded locally — the page issues no upload request. Source lives in `docs/` and is regenerated from `references/*.json` by `python scripts/build_site.py`.
 
 ## Five layers for prompting, one for print, one for generation
 
@@ -314,6 +325,8 @@ This project intends to make money, so let's be upfront. Full pricing and delive
 - [x] Circular safe-area preview for IM avatar cropping (`guide_overlay.py`, v0.2.0)
 - [x] Roster-scale prompt production and consistency check (`batch_roster.py`, v0.2.0)
 - [x] Generation backend layer G: your photo → local open-source service → automatic spec re-check, plus a browser workbench (`gen_portrait.py` / `studio.py`, v0.3.0)
+- [x] Hosted trial site <https://shixingya.github.io/spec-face/>: prompt assembly and photo checking in the browser, fully static, no image leaves the page (v0.4.0)
+- [ ] Publish the trial site automatically on push to `main`, dropping the manual `docs/` → `gh-pages` copy
 - [ ] **Run G-01/G-03 on a real GPU** and backfill `providers.json` evidence plus the first `identity_matrix` row — they honestly say `unverified` today
 - [ ] Drag a roster into `studio.py` and render a whole column of people
 - [ ] Verify each spec against official sources and retire the `needs_verification` flag

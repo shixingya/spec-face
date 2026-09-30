@@ -1,6 +1,6 @@
 # MANIFEST
 
-版本 `0.3.0` · 2026-09-29 · 新增生成后端层（`G` 本机开源服务 + `gen_portrait.py` 出图链路 + `studio.py` 本地工作台）。
+版本 `0.4.0` · 2026-09-30 · 上线在线试用站 <https://shixingya.github.io/spec-face/>（选号出词 + 浏览器本地校验），补齐文档入口与发布流程。
 
 ## 目录与职责
 
@@ -33,9 +33,10 @@
 | `scripts/build_gallery.py` | 构建离线画廊 | ✅ |
 | `scripts/build_docs.py` | 构建 Markdown 图鉴 | ✅ |
 | `scripts/build_site.py` | 构建 GitHub Pages 试用站：把 `references/*.json` 打包成 `docs/data/library.js`，同步画廊 | ✅ |
-| `docs/index.html` + `docs/assets/` | 在线试用台：选号出双语提示词、浏览器本地校验、生成本机出图命令 | ✅ 手工维护 |
-| `docs/data/library.js` | 网页读的数字库 | ❌ 由 `build_site.py` 生成 |
-| `docs/gallery.html` | 全量编号图鉴（站点内页） | ❌ 由 `build_gallery.py` + `build_site.py` 复制 |
+| `docs/index.html` + `docs/assets/` | 在线试用台 <https://shixingya.github.io/spec-face/>：选号出双语提示词、浏览器本地校验、生成本机出图命令 | ✅ 手工维护 |
+| `docs/data/library.js` | 网页读的数字库（线上站唯一数据源） | ❌ 由 `build_site.py` 生成 |
+| `docs/gallery.html` | 全量编号图鉴（站点内页 `/spec-face/gallery.html`） | ❌ 由 `build_gallery.py` + `build_site.py` 复制 |
+| `gh-pages` 分支 | 线上 Pages 的发布副本，内容 = `docs/` 全量，路径置于分支根目录 | ❌ 手工同步，见下方「试用站发布」 |
 | `research/README.md` | 身份保真盲测协议：门槛、七步流程、列定义、作弊清单 | ✅ |
 | `research/consent-form.md` | 肖像授权书模板（含撤回权与删除期限） | ✅ |
 | `research/score-sheet-template.csv` | 打分表模板 | ✅ |
@@ -54,6 +55,21 @@ python scripts/build_site.py           # 改了 references/ 就要重跑，网�
 
 排版可排张数在 `SPECS.md`、离线画廊、`print_export.py` 三处共用 `lib.print_fit()`，
 所以不会出现"文档写 12 张、脚本算出 8 张"这种打脸。
+
+## 试用站发布（<https://shixingya.github.io/spec-face/>）
+
+`docs/` 是源，`gh-pages` 分支是发布副本，Pages 读的是后者。**改了 `docs/` 必须手工同步一次**，否则线上还是旧数字库——这是当前最容易踩的坑，也是路线图里"push 到 main 自动发布"要解决的唯一理由。
+
+```bash
+python scripts/build_site.py                                  # 先重生成 docs/data/library.js
+git worktree add ../gh-pages-wt gh-pages                        # 已存在的发布分支，独立工作区，不扰动 main
+rm -rf ../gh-pages-wt/* && cp -r docs/. ../gh-pages-wt/         # 全量替换：站点内容放分支根目录（注意路径是工作区，不是仓库）
+cd ../gh-pages-wt && git add -A && git commit -m "pages: <说明>"
+GIT_SSH_COMMAND="ssh -o BatchMode=yes" git push origin gh-pages   # HTTPS 通道被中间件重置时走 SSH
+cd - && git worktree remove ../gh-pages-wt
+```
+
+推完约 1 分钟生效。验证别只看 HTTP 状态码——Pages 的 "Site not found" 页也返回 200，要 grep `<title>` 确认真拿到了自己的页面。
 
 ## 已知未完成
 

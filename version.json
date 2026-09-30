@@ -1,6 +1,6 @@
 {
-  "version": "0.3.0",
-  "released": "2026-09-29",
+  "version": "0.4.0",
+  "released": "2026-09-30",
   "assets": {
     "personas": 20,
     "wear": 12,
@@ -24,6 +24,24 @@
     "gen_portrait.py",
     "studio.py"
   ],
+  "web_layer": {
+    "trial_site": "https://shixingya.github.io/spec-face/",
+    "gallery_page": "https://shixingya.github.io/spec-face/gallery.html",
+    "source": "docs/",
+    "publishes_to": "gh-pages 分支（手工全量同步，未接 CI）",
+    "does": [
+      "选编号组装中英双语提示词（与 prompt_spec.py --json 逐句同构，输出 SHA-256 实测一致）",
+      "自检清单（同 lib.checklist）",
+      "拖图片本地校验：格式 / 体积 / 像素 / 宽高比 / 底色取样（同 check_spec.border_color 口径）",
+      "生成 gen_portrait.py 本机出图命令（页面本身不出图）"
+    ],
+    "does_not": [
+      "不检测人脸：头部占比与瞳孔线一律标 −，不假装通过",
+      "不读也不写 DPI 元数据：标 −，交给本机 check_spec.py",
+      "不上传：图片在浏览器本地解码，页面不发任何上传请求",
+      "不出图：渲染必须由本机 Python + GPU 完成"
+    ]
+  },
   "generation_gates": [
     "必须提供真实照片 --photo",
     "必须写明授权 --confirm-authorized",
